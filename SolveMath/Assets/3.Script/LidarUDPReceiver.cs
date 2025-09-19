@@ -32,11 +32,11 @@ public class LidarUDPReceiver : MonoBehaviour
     {
         if (!string.IsNullOrEmpty(latestMessage))
         {
-            Debug.Log("받은 데이터: " + latestMessage);
+            //Debug.Log("받은 데이터: " + latestMessage);
             riderData = Parseessage(latestMessage);
             if(riderData.Length != 0)
             {
-                Debug.Log(riderData[2]);
+                //Debug.Log(riderData[2]);
                 playerManager.SetPlayerPosition(riderData[2]);
                 //두명이상 인식시 게임스탑
 
@@ -57,7 +57,7 @@ public class LidarUDPReceiver : MonoBehaviour
     private Vector2[] Parseessage(string message)
     {
         // 1. '|' 기준으로 Split
-        string[] parts = message.Split('|');
+        string[] parts = message.Split('|'); 
 
         List<Vector2> vectors = new List<Vector2>();
 
