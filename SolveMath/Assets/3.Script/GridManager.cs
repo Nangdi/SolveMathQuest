@@ -2,19 +2,30 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ArrowManager : MonoBehaviour
+public class GridManager : MonoBehaviour
 {
-    public static ArrowManager instance;
+    public static GridManager instance;
 
-    public GameObject[] Map_1;
-    public GameObject[] Map_2;
-    public GameObject[] Map_3;
+    public GameObject[] arrowMap_1;
+    public GameObject[] arrowMap_2;
+    public GameObject[] arrowMap_3;
+    public GameObject[] jumpMap_1;
+    public GameObject[] jumpMap_2;
+    public GameObject[] jumpMap_3;
+    public GameObject[] numMap_1;
+    public GameObject[] numMap_2;
+    public GameObject[] numMap_3;
     public Collider2D[,] colliderGrid;  // 실제 씬에 있는 타일 Collider 저장
     public Dictionary<Collider2D, Vector2Int> colliderToIndex; // 매핑 테이블
     public ArrowDir[,] arrowDirs1 = new ArrowDir[3, 3];
     public ArrowDir[,] arrowDirs2 = new ArrowDir[5, 5];
     public ArrowDir[,] arrowDirs3 ;
-
+    public int[,] jumpCount1;
+    public int[,] jumpCount2;
+    public int[,] jumpCount3;
+    public int[,] num1;
+    public int[,] num2;
+    public int[,] num3;
 
     private void Awake()
     {
@@ -28,14 +39,22 @@ public class ArrowManager : MonoBehaviour
             Destroy(gameObject);
         }
         colliderToIndex = new Dictionary<Collider2D, Vector2Int>();
-        SetArrow();
+        InitArrow();
+        InitJumpCount();
+        InitNum();
 
     }
     private void Start()
     {
-        SetDic(Map_3);
-        SetDic(Map_2);
-        SetDic(Map_1);
+        SetDic(arrowMap_1);
+        SetDic(arrowMap_2);
+        SetDic(arrowMap_3);
+        SetDic(jumpMap_1);
+        SetDic(jumpMap_2);
+        SetDic(jumpMap_3);
+        SetDic(numMap_1);
+        SetDic(numMap_2);
+        SetDic(numMap_3);
     }
     public void SetDic(GameObject[] map)
     {
@@ -61,7 +80,7 @@ public class ArrowManager : MonoBehaviour
     }
 
 
-    private void SetArrow()
+    private void InitArrow()
     {
         arrowDirs1 = new ArrowDir[,] {
             { ArrowDir.UpRight, ArrowDir.Up, ArrowDir.Left},
@@ -86,5 +105,63 @@ public class ArrowManager : MonoBehaviour
             { ArrowDir.DownRight, ArrowDir.DownLeft, ArrowDir.DownRight, ArrowDir.DownRight, ArrowDir.DownLeft,ArrowDir.DownRight,ArrowDir.Down },
         };
     }
-    
+    private void InitJumpCount()
+    {
+        jumpCount1 = new int[,]
+        {
+            {1,2,1},
+            {2,1,1},
+            {2,2,0},
+        };
+        jumpCount2 = new int[,]
+        {
+            {2,3,2,1},
+            {1,2,1,3},
+            {3,2,1,1},
+            {0,3,2,3},
+
+        };
+        jumpCount3 = new int[,]
+        {
+            {3,2,1,1,1},
+            {2,1,3,2,3},
+            {1,2,0,3,2},
+            {3,1,2,2,1},
+            {1,2,1,3,2},
+        };
+    }
+    private void InitNum()
+    {
+        num1 = new int[,]
+       {
+            {0,0,0,2,2,2},
+            {2,0,0,2,0,0},
+            {0,0,2,2,2,2},
+            {2,2,0,0,0,2},
+            {0,2,0,0,0,2},
+            {0,2,2,2,2,2},
+       };
+        num2 = new int[,]
+       {
+            {2 ,0 ,5 ,2 ,5 ,2 ,5 ,2},
+            {0 ,10,2 ,2 ,0 ,2 ,2 ,5},
+            {0 ,5 ,5 ,0 ,0 ,5 ,10,0},
+            {0 ,2 ,2 ,5 ,2 ,5 ,2 ,5},
+            {0 ,0 ,2 ,0 ,0 ,5 ,0 ,2},
+            {2 ,0 ,10,0 ,0 ,5 ,0 ,5},
+            {10,2 ,5 ,2 ,0 ,2 ,5 ,2},
+            {10,10,5 ,5 ,2 ,5 ,0 ,0},
+       };
+        num3 = new int[,]
+       {
+            {0,0,0,0,2,2,2,2},
+            {2,2,2,2,2,0,0,0},
+            {2,0,0,0,0,0,0,0},
+            {2,0,0,0,0,0,0,0},
+            {2,2,2,2,2,2,0,0},
+            {0,0,0,0,0,2,2,0},
+            {0,0,0,0,0,0,2,0},
+            {2,2,2,2,2,2,2,0},
+       };
+    }
 }

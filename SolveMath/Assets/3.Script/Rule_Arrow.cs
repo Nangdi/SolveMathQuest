@@ -89,9 +89,9 @@ public class Rule_Arrow : MonoBehaviour, IGameRule
         //밟았던길 저장
         previousGridPos = currentGridPos;
         //밟은위치 좌표구하기/업데이트
-        currentGridPos = ArrowManager.instance.colliderToIndex[col];
+        currentGridPos = GridManager.instance.colliderToIndex[col];
         //밟은위치 화살표 확인
-        ArrowDir currentDir = ArrowManager.instance.arrowDirs1[currentGridPos.y, currentGridPos.x];
+        ArrowDir currentDir = mazeGrid[currentGridPos.y, currentGridPos.x];
         //화살표의 vector값
         Vector2Int currentArrowDir = ArrowDirToVector(currentDir);
         //내가이동한 방향구하기
@@ -118,20 +118,50 @@ public class Rule_Arrow : MonoBehaviour, IGameRule
         {
             //가야하는방향과 다른곳으로 이동함
             Debug.Log("틀린방향이동");
-            return false;
+            return true;
         }
         Debug.Log($"targetDir : {targetDir} , optionDir : {optionDir} , movingDir : {movingDir} , currentPos : {currentGridPos} , previousPos : {previousGridPos}");
 
-        return true;
+
+
+        return false;
     }
 
     public void ResetData(Collider2D col)
     {
         //스타트에 들어올시점
         //가야하는 방향업데이트 , 바꿀수있는 방향 초기화 , 위치 초기화
-        currentGridPos = ArrowManager.instance.colliderToIndex[col];
-        ArrowDir currentDir = ArrowManager.instance.arrowDirs1[currentGridPos.y, currentGridPos.x];
+        currentGridPos = GridManager.instance.colliderToIndex[col];
+        ArrowDir currentDir = mazeGrid[currentGridPos.y, currentGridPos.x];
         targetDir = ArrowDirToVector(currentDir);
         optionDir = Vector2Int.zero;
+    }
+
+    public bool GameClear(Collider2D col)
+    {
+        if (col.CompareTag("Arrive"))
+        {
+            return true;
+
+        }
+        return false;
+    }
+    public void SetDifficultMode(Difficulty difficulty)
+    {
+        switch (difficulty)
+        {
+            case Difficulty.eazy:
+                mazeGrid = new ArrowDir[GridManager.instance.arrowDirs1.Length, GridManager.instance.arrowDirs1.Length];
+                mazeGrid = GridManager.instance.arrowDirs1;
+                break;
+            case Difficulty.Normal:
+                mazeGrid = new ArrowDir[GridManager.instance.arrowDirs2.Length, GridManager.instance.arrowDirs2.Length];
+                mazeGrid = GridManager.instance.arrowDirs2;
+                break;
+            case Difficulty.Hard:
+                mazeGrid = new ArrowDir[GridManager.instance.arrowDirs3.Length, GridManager.instance.arrowDirs3.Length];
+                mazeGrid = GridManager.instance.arrowDirs3;
+                break;
+        }
     }
 }

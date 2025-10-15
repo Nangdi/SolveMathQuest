@@ -8,6 +8,9 @@ public class Rule_NoLeftTurn : MonoBehaviour, IGameRule
     public Vector2 currentPos;
     public Vector2 previousPos;
     public int headDir;
+
+    
+
     public bool isRuleViolated(Collider2D col)
     {
 
@@ -15,7 +18,7 @@ public class Rule_NoLeftTurn : MonoBehaviour, IGameRule
         if (col.CompareTag("Wall"))
         {
             Debug.Log(col.name);
-            return false;
+            return true;
           
         }
         //왔던길 저장
@@ -34,13 +37,13 @@ public class Rule_NoLeftTurn : MonoBehaviour, IGameRule
         if (dot < -0.7f)  // 거의 반대 → 후진
         {
             Debug.Log("후진");
-            return false;
+            return true;
 
         }
         else if (cross > 0.3f) // 좌회전
         {
             Debug.Log("좌회전");
-            return false;
+            return true;
         }
         else if (cross < -0.3f) // 우회전
         {
@@ -56,7 +59,7 @@ public class Rule_NoLeftTurn : MonoBehaviour, IGameRule
         // 위치 갱신
         previousPos = currentPos;
         currentPos = newPos;
-        return true;
+        return false;
     }
 
     public void ResetData(Collider2D col)
@@ -66,5 +69,27 @@ public class Rule_NoLeftTurn : MonoBehaviour, IGameRule
         previousPos = currentPos;
         Debug.Log($"이전위치 {previousPos}");
         headDir = 0;
+    }
+    public bool GameClear(Collider2D col)
+    {
+        if (col.CompareTag("Arrive"))
+        {
+            return true;
+
+        }
+        return false;
+    }
+
+    public void SetDifficultMode(Difficulty difficulty)
+    {
+        switch (difficulty)
+        {
+            case Difficulty.eazy:
+                break;
+            case Difficulty.Normal:
+                break;
+            case Difficulty.Hard:
+                break;
+        }
     }
 }

@@ -14,6 +14,7 @@ public class GameManager : MonoBehaviour
     public static GameManager instance;
     public GameType gameType;
     public IGameRule gameRule;
+    public Difficulty difficultyMode;
     public bool startGame;
     public bool Paused;
     public int life = 3;
@@ -35,6 +36,10 @@ public class GameManager : MonoBehaviour
             Destroy(gameObject);
         }
 
+    }
+    private void Start()
+    {
+       
     }
     public void Fail()
     {

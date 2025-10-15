@@ -17,7 +17,9 @@ public class PlayerManager : MonoBehaviour
     // 라이다에서 받은 (0~1) 좌표값 입력
     private void Start()
     {
-        GameManager.instance.SetGameRule(GameType.Arrow);
+        GameManager.instance.SetGameRule(GameType.Number);
+        GameManager.instance.gameRule.SetDifficultMode(Difficulty.Normal);
+        GameManager.instance.difficultyMode = Difficulty.Normal;
     }
     public void SetPlayerPosition(Vector2 lidarPos)
     {
@@ -51,7 +53,7 @@ public class PlayerManager : MonoBehaviour
             }
             else if (GameManager.instance.Paused) 
             {
-                
+                //재시작은 현재위치에서 해야함 /todo
                 GameManager.instance.Paused = false;
                 GameManager.instance.gameRule.ResetData(collision);
                 Debug.Log("게임 재시작");
@@ -63,16 +65,17 @@ public class PlayerManager : MonoBehaviour
         if (!GameManager.instance.startGame || GameManager.instance.Paused) return;
 
        
-        if (!GameManager.instance.gameRule.isRuleViolated(collision))
+        if (GameManager.instance.gameRule.isRuleViolated(collision))
         {
             GameManager.instance.Fail();
         }
-        if (collision.CompareTag("Arrive"))
+        if (GameManager.instance.gameRule.GameClear(collision))
         {
+            //게임매니저 게임클리어 로직 todo
             Debug.Log("게임클리어!");
 
         }
-       
+
 
     }
 
