@@ -10,16 +10,17 @@ public class PlayerManager : MonoBehaviour
     public readonly float worldWidth = 5.6f;   // X축 크기
     public readonly float worldHeight = 5.6f;  // Z축 크기
     Vector2 targetPos;
-   
 
-    
+
+    private void Awake()
+    {
+     
+        
+    }
 
     // 라이다에서 받은 (0~1) 좌표값 입력
     private void Start()
     {
-        GameManager.instance.SetGameRule(GameType.Number);
-        GameManager.instance.gameRule.SetDifficultMode(Difficulty.Normal);
-        GameManager.instance.difficultyMode = Difficulty.Normal;
     }
     public void SetPlayerPosition(Vector2 lidarPos)
     {
@@ -68,8 +69,7 @@ public class PlayerManager : MonoBehaviour
         if (GameManager.instance.gameRule.isRuleViolated(collision))
         {
             GameManager.instance.Fail();
-        }
-        if (GameManager.instance.gameRule.GameClear(collision))
+        }else if (GameManager.instance.gameRule.GameClear(collision))
         {
             //게임매니저 게임클리어 로직 todo
             Debug.Log("게임클리어!");

@@ -89,7 +89,7 @@ public class Rule_Arrow : MonoBehaviour, IGameRule
         //밟았던길 저장
         previousGridPos = currentGridPos;
         //밟은위치 좌표구하기/업데이트
-        currentGridPos = GridManager.instance.colliderToIndex[col];
+        currentGridPos = MapManager.instance.colliderToIndex[col];
         //밟은위치 화살표 확인
         ArrowDir currentDir = mazeGrid[currentGridPos.y, currentGridPos.x];
         //화살표의 vector값
@@ -131,7 +131,7 @@ public class Rule_Arrow : MonoBehaviour, IGameRule
     {
         //스타트에 들어올시점
         //가야하는 방향업데이트 , 바꿀수있는 방향 초기화 , 위치 초기화
-        currentGridPos = GridManager.instance.colliderToIndex[col];
+        currentGridPos = MapManager.instance.colliderToIndex[col];
         ArrowDir currentDir = mazeGrid[currentGridPos.y, currentGridPos.x];
         targetDir = ArrowDirToVector(currentDir);
         optionDir = Vector2Int.zero;
@@ -151,16 +151,16 @@ public class Rule_Arrow : MonoBehaviour, IGameRule
         switch (difficulty)
         {
             case Difficulty.eazy:
-                mazeGrid = new ArrowDir[GridManager.instance.arrowDirs1.Length, GridManager.instance.arrowDirs1.Length];
-                mazeGrid = GridManager.instance.arrowDirs1;
+                mazeGrid = new ArrowDir[MapManager.instance.arrowDirs1.Length, MapManager.instance.arrowDirs1.Length];
+                mazeGrid = MapManager.instance.arrowDirs1;
                 break;
             case Difficulty.Normal:
-                mazeGrid = new ArrowDir[GridManager.instance.arrowDirs2.Length, GridManager.instance.arrowDirs2.Length];
-                mazeGrid = GridManager.instance.arrowDirs2;
+                mazeGrid = new ArrowDir[MapManager.instance.arrowDirs2.Length, MapManager.instance.arrowDirs2.Length];
+                mazeGrid = MapManager.instance.arrowDirs2;
                 break;
             case Difficulty.Hard:
-                mazeGrid = new ArrowDir[GridManager.instance.arrowDirs3.Length, GridManager.instance.arrowDirs3.Length];
-                mazeGrid = GridManager.instance.arrowDirs3;
+                mazeGrid = new ArrowDir[MapManager.instance.arrowDirs3.Length, MapManager.instance.arrowDirs3.Length];
+                mazeGrid = MapManager.instance.arrowDirs3;
                 break;
         }
     }

@@ -54,16 +54,16 @@ public class Rule_Number : MonoBehaviour, IGameRule
         switch (difficulty)
         {
             case Difficulty.eazy:
-                map = new int[GridManager.instance.num1.Length, GridManager.instance.num1.Length];
-                map = GridManager.instance.num1;
+                map = new int[MapManager.instance.num1.Length, MapManager.instance.num1.Length];
+                map = MapManager.instance.num1;
                 break;
             case Difficulty.Normal:
-                map = new int[GridManager.instance.num2.Length, GridManager.instance.num2.Length];
-                map = GridManager.instance.num2;
+                map = new int[MapManager.instance.num2.Length, MapManager.instance.num2.Length];
+                map = MapManager.instance.num2;
                 break;
             case Difficulty.Hard:
-                map = new int[GridManager.instance.num3.Length, GridManager.instance.num3.Length];
-                map = GridManager.instance.num3;
+                map = new int[MapManager.instance.num3.Length, MapManager.instance.num3.Length];
+                map = MapManager.instance.num3;
                 break;
         }
     }
@@ -82,7 +82,7 @@ public class Rule_Number : MonoBehaviour, IGameRule
             Debug.Log($"현재발판 숫자 : {nextNum}, 다음밟아야하는 배수 : {nomalInt[moveCount]} ");
         if (nextNum % nomalInt[moveCount] !=0)
         {
-            Debug.Log($"무브카운트초기화");
+            Debug.Log($"잘못된길");
             moveCount = 1;
             return true;
         }
@@ -91,6 +91,6 @@ public class Rule_Number : MonoBehaviour, IGameRule
     }
     public void ResetData(Collider2D col)
     {
-        currentPos = GridManager.instance.colliderToIndex[col];
+        currentPos = MapManager.instance.colliderToIndex[col];
     }
 }

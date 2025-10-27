@@ -23,7 +23,7 @@ public class Rule_Jump : MonoBehaviour, IGameRule
         //이전위치 저장
         previousPos = currentPos;
         //현재위치 업데이트
-        currentPos = GridManager.instance.colliderToIndex[col];
+        currentPos = MapManager.instance.colliderToIndex[col];
         //이동방향계산
         int dx = currentPos.x - previousPos.x;
         int dy = currentPos.y - previousPos.y;
@@ -57,7 +57,7 @@ public class Rule_Jump : MonoBehaviour, IGameRule
     public void ResetData(Collider2D col)
     {
         // 좌표찾기
-        currentPos = GridManager.instance.colliderToIndex[col];
+        currentPos = MapManager.instance.colliderToIndex[col];
         //이동해야하는 Count 초기화
         moveCount = map[currentPos.y, currentPos.x];
         //이동중인방향 초기화
@@ -81,16 +81,16 @@ public class Rule_Jump : MonoBehaviour, IGameRule
         switch (difficulty)
         {
             case Difficulty.eazy:
-                map = new int[GridManager.instance.jumpCount1.Length, GridManager.instance.jumpCount1.Length];
-                map = GridManager.instance.jumpCount1;
+                map = new int[MapManager.instance.jumpCount1.Length, MapManager.instance.jumpCount1.Length];
+                map = MapManager.instance.jumpCount1;
                 break;
             case Difficulty.Normal:
-                map = new int[GridManager.instance.jumpCount2.Length, GridManager.instance.jumpCount2.Length];
-                map = GridManager.instance.jumpCount2;
+                map = new int[MapManager.instance.jumpCount2.Length, MapManager.instance.jumpCount2.Length];
+                map = MapManager.instance.jumpCount2;
                 break;
             case Difficulty.Hard:
-                map = new int[GridManager.instance.jumpCount3.Length, GridManager.instance.jumpCount3.Length];
-                map = GridManager.instance.jumpCount3;
+                map = new int[MapManager.instance.jumpCount3.Length, MapManager.instance.jumpCount3.Length];
+                map = MapManager.instance.jumpCount3;
                 break;
         }
     }

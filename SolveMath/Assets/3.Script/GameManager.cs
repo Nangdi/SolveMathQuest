@@ -35,11 +35,13 @@ public class GameManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
-
     }
     private void Start()
     {
        
+        SetGameRule(GameType.Arrow);
+        difficultyMode = Difficulty.Normal;
+        gameRule.SetDifficultMode(difficultyMode);
     }
     public void Fail()
     {
