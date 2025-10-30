@@ -4,8 +4,8 @@ using UnityEngine;
 public enum GameType
 {
     NoLeftTurn,
-    Number,
     Jump,
+    Number,
     Arrow,
     ShortestPath
 }
@@ -15,6 +15,8 @@ public class GameManager : MonoBehaviour
     public GameType gameType;
     public IGameRule gameRule;
     public Difficulty difficultyMode;
+    public GameModeUIData[] datas;
+    public GameModeUIData currentData;
     public bool startGame;
     public bool Paused;
     public int life = 3;
@@ -77,5 +79,16 @@ public class GameManager : MonoBehaviour
                 gameRule = new Rule_ShortestPath();
                 break;
         }
+    }
+    public void SetDifficulty(int index)
+    {
+        //0 : eazy , 1 : nomal , 2 : hard
+        difficultyMode = (Difficulty)index;
+    }
+    public void SetGameMode(int index)
+    {
+        gameType = (GameType)index;
+        currentData = datas[index];
+        //모드 선택시 스프라이트 교체
     }
 }

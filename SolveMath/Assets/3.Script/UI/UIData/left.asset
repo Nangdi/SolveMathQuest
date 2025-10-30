@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ea3cb2f240be7940a832469a81c8f8a, type: 3}
+  m_Name: left
+  m_EditorClassIdentifier: 
+  modeName: "\uC88C\uD68C\uC804"
+  mapSprites:
+  - {fileID: 21300000, guid: 94b016441d6a6114da4f18809208bc4f, type: 3}
+  - {fileID: 21300000, guid: c4c95cfc3ab67ee4db6a8a716414bc94, type: 3}
+  - {fileID: 21300000, guid: 03b72270a1b4f884e9a08517b5150196, type: 3}
+  titleSprite: {fileID: 21300000, guid: 4f7d1a299d0ffb44781fc1a271e7447f, type: 3}
+  mapSprite: {fileID: 0}
+  descriptionSprites:
+  - {fileID: 21300000, guid: db4485b605e248244bfd6508d897ebb7, type: 3}
