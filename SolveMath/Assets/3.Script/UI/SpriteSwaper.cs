@@ -7,11 +7,18 @@ public class SpriteSwaper : MonoBehaviour
 {
     [SerializeField]
     private Image[] targetImages;
-
     [SerializeField]
     private Sprite[] difficultUIs;
-    //[SerializeField]
-    
+    [Header("°á°úÃ¢")]
+    [SerializeField]
+    private Image resultImage;
+    [SerializeField]
+    private Image frameImage;
+    [SerializeField]
+    private Sprite[] resultSprites;
+    [SerializeField]
+    private Sprite[] frameSprites;
+
 
     // Start is called before the first frame update
     void Start()
@@ -46,6 +53,7 @@ public class SpriteSwaper : MonoBehaviour
         if (uiData.descriptionSprites.Length == 1)
         {
             targetImages[6].sprite = uiData.descriptionSprites[0];
+            targetImages[6].SetNativeSize();
         }
         else
         {
@@ -55,5 +63,19 @@ public class SpriteSwaper : MonoBehaviour
         targetImages[7].sprite = difficultUIs[difficultyIndex];
         targetImages[8].sprite = difficultUIs[difficultyIndex];
         targetImages[9].sprite = uiData.mapSprites[difficultyIndex];
+    }
+    public void SwapResultSprite(bool isClear)
+    {
+        if (isClear)
+        {
+            resultImage.sprite = resultSprites[0];
+            frameImage.sprite = frameSprites[0];
+        }
+        else
+        {
+            resultImage.sprite = resultSprites[1];
+            frameImage.sprite = frameSprites[1];
+
+        }
     }
 }

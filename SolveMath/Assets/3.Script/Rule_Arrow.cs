@@ -88,6 +88,7 @@ public class Rule_Arrow : MonoBehaviour, IGameRule
     {
         //밟았던길 저장
         previousGridPos = currentGridPos;
+        //if (previousGridPos == currentGridPos) return false;
         //밟은위치 좌표구하기/업데이트
         currentGridPos = MapManager.instance.colliderToIndex[col];
         //밟은위치 화살표 확인

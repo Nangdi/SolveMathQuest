@@ -1,12 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class HangulKeyborad : MonoBehaviour
 {
-
+    public PlayerManager playerManager;
     public TMP_InputField korField;
     ////VirtualKeyboard
     public GameObject wndKeyBoard;
@@ -59,11 +60,21 @@ public class HangulKeyborad : MonoBehaviour
 
     char chKorInput = ' '; //받은 글자
                            //kor UniCode = (start * 21 + mid )*28 + End + 0xAC00
-
+                           
+    
     //InputKey
     public void OnClicked(Text text)
     {
         OnClickedOnKor(korField, text);
+    }
+    public void onClear()
+    {
+        korField.text = "";
+    }
+    public void onEnter()
+    {
+        playerManager.playerName = korField.text;
+        onClear();
     }
 
     void OnClickedOnKor(TMP_InputField inputfiled, Text text)
@@ -576,12 +587,14 @@ public class HangulKeyborad : MonoBehaviour
 
     void Start()
     {
+       
         //대문자로 되어 있는거 소문자로 변환 해준거
         foreach (GameObject key in LangKey)
         {
             key.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text =
                 key.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text.ToLower();
         }
+        OnKorEngClicked();
     }
 
     void Update()
