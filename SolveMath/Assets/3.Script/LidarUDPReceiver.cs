@@ -34,7 +34,7 @@ public class LidarUDPReceiver : MonoBehaviour
         {
             //Debug.Log("받은 데이터: " + latestMessage);
             riderData = Parseessage(latestMessage);
-            if(riderData.Length != 0)
+            if (riderData.Length != 0)
             {
                 //Debug.Log(riderData[2]);
                 playerManager.SetPlayerPosition(riderData[2]);
@@ -42,6 +42,12 @@ public class LidarUDPReceiver : MonoBehaviour
 
             }
             latestMessage = null; // 한 번만 찍고 초기화
+        }
+        else
+        {
+            Debug.Log($"아무도 안들어온 상태");
+            //여기서 타이머 작동 일정시간 경과 시 -> 대기화면
+            //
         }
     }
     private void ReceiveData()

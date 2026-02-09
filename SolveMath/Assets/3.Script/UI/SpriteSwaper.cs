@@ -54,11 +54,15 @@ public class SpriteSwaper : MonoBehaviour
         {
             targetImages[6].sprite = uiData.descriptionSprites[0];
             targetImages[6].SetNativeSize();
+            targetImages[10].sprite = uiData.descriptionSprites[0];
+            targetImages[10].SetNativeSize();
         }
         else
         {
             targetImages[6].sprite = uiData.descriptionSprites[difficultyIndex];
             targetImages[6].SetNativeSize();
+            targetImages[10].sprite = uiData.descriptionSprites[difficultyIndex];
+            targetImages[10].SetNativeSize();
         }
         targetImages[7].sprite = difficultUIs[difficultyIndex];
         targetImages[8].sprite = difficultUIs[difficultyIndex];

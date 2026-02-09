@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Timers;
+using UnityEditor.Searcher;
 using UnityEngine;
 public enum GameType
 {
@@ -14,6 +16,7 @@ public class GameManager : MonoBehaviour
     public static GameManager instance;
 
     [SerializeField] private UIFlowManager uiFlowManager;
+    [SerializeField] private GameSessionManager sessionManager;
     public GameType gameType;
     public IGameRule gameRule;
     public Difficulty difficultyMode;
@@ -43,9 +46,9 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
 
-        SetGameRule(GameType.Arrow);
-        difficultyMode = Difficulty.Normal;
-        gameRule.SetDifficultMode(difficultyMode);
+        //SetGameRule(GameType.Arrow);
+        //difficultyMode = Difficulty.Normal;
+        //gameRule.SetDifficultMode(difficultyMode);
     }
     private void Update()
     {
@@ -56,9 +59,10 @@ public class GameManager : MonoBehaviour
         if (!startGame) return;
         if (Paused) return;
         elapsedTime += Time.deltaTime;
+        sessionManager.UpdateTimeText(time - elapsedTime);
         //ui타이머 업데이트
         //타이머 0초될시 게임오버
-        if(elapsedTime> time)
+        if (elapsedTime> time)
         {
             ResultGame(false);
             Debug.Log("게임오버");
@@ -68,6 +72,8 @@ public class GameManager : MonoBehaviour
     {
         life--;
         Paused = true;
+        sessionManager.pauseScreen.SetActive(true);
+        sessionManager.LoseLife(life);
         Debug.Log($"라이프감소 남은라이프 : {life} , 게임 일시정지 시작위치로 돌아가세요");
 
         if (life < 1)
@@ -84,6 +90,7 @@ public class GameManager : MonoBehaviour
         elapsedTime = 0;
         Paused = false;
         startGame = false;
+        sessionManager.ResetUIState();
     }
     public void ReStart()
     {

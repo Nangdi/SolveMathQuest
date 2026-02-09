@@ -14,8 +14,8 @@ public class UIFlowManager : MonoBehaviour
 {
     [SerializeField]
     private SpriteSwaper spriteSwaper;
-
-    private int currentFlowIndex = 2;
+    [SerializeField]
+    private int currentFlowIndex = 0;
     private int currentModedIndex = 0;
     private int currentDifficultyIndex = 0;
     private bool ChangingScene = false;
@@ -25,9 +25,12 @@ public class UIFlowManager : MonoBehaviour
     private Map[] gameMaps;
     [SerializeField]
     private GameObject myRecord;
+    [SerializeField]
+    private GameObject[] FloorScreens;
     private void Start()
     {
         AllDeactiveMap();
+        JumpScene(currentFlowIndex);
     }
     public void SelectDifficulty(int index)
     {
@@ -113,5 +116,15 @@ public class UIFlowManager : MonoBehaviour
                 gameMaps[i].maps[j].SetActive(false);
             }
         }
+    }
+    public void ResetFloorScreen()
+    {
+        for (int i = 0; i < FloorScreens.Length; i++)
+        {
+            FloorScreens[i].SetActive(false);
+        }
+        FloorScreens[0].SetActive(true);
+        JumpScene(0);
+        GameManager.instance.ResetGame();
     }
 }

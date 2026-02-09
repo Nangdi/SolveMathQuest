@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
+using UnityEditor;
 using UnityEngine;
 
 public class PlayerManager : MonoBehaviour
@@ -39,6 +40,7 @@ public class PlayerManager : MonoBehaviour
 
         //Debug.Log($"플레이어 좌표 변환: {lidarPos} → {transform.position}");
     }
+    
     private void Update()
     {
         //라이더사용시 다시 활성화 todo
@@ -51,8 +53,13 @@ public class PlayerManager : MonoBehaviour
         //재시작
         if (collision.CompareTag("Start"))
         {
-
-            GameManager.instance.gameRule.ResetData(collision);
+            if (!GameManager.instance.startGame)
+            {
+                GameManager.instance.gameRule.ResetData(collision);
+                //스타트문구띄우고 도착 시 카운트다운 시작 3초 후 -> 게임스타트
+                
+                GameManager.instance.GameStart();
+            }
             if (GameManager.instance.Paused)
             {
                 GameManager.instance.Paused = false;
@@ -60,7 +67,7 @@ public class PlayerManager : MonoBehaviour
                 return;
             }
             //재시작은 현재위치에서 해야함 /todo
-            Debug.Log("아무일도없음");
+            //Debug.Log("아무일도없음");
             return;
 
 
