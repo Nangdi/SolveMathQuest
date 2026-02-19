@@ -1,6 +1,14 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+
+[Serializable]
+public class CorrectPath
+{
+    public Transform[] path;
+}
+
 
 public class MapManager : MonoBehaviour
 {
@@ -17,6 +25,7 @@ public class MapManager : MonoBehaviour
     public GameObject[] numMap_3;
     public Collider2D[,] colliderGrid;  // 실제 씬에 있는 타일 Collider 저장
     public Dictionary<Collider2D, Vector2Int> colliderToIndex; // 매핑 테이블
+    public Dictionary<GameType, List<CorrectPath>> typeToPathDic = new Dictionary<GameType, List<CorrectPath>>(); // 매핑 테이블
     public ArrowDir[,] arrowDirs1 = new ArrowDir[3, 3];
     public ArrowDir[,] arrowDirs2 = new ArrowDir[5, 5];
     public ArrowDir[,] arrowDirs3 ;
@@ -30,8 +39,12 @@ public class MapManager : MonoBehaviour
     public Dictionary<string, List<(string dest, int time)>> graph1;
     public Dictionary<string, List<(string dest, int time)>> graph2;
     public Dictionary<string, List<(string dest, int time)>> graph3;
- 
 
+    public List<CorrectPath> leftCorrectPath;
+    public List<CorrectPath> numCorrectPath;
+    public List<CorrectPath> jumpCorrectPath;
+    public List<CorrectPath> arrowCorrectPath;
+    public List<CorrectPath> shortestCorrectPath;
 
     private void Awake()
     {
@@ -62,6 +75,11 @@ public class MapManager : MonoBehaviour
         SetDic(numMap_1);
         SetDic(numMap_2);
         SetDic(numMap_3);
+        typeToPathDic[GameType.Arrow] = arrowCorrectPath;
+        typeToPathDic[GameType.Number] = numCorrectPath;
+        typeToPathDic[GameType.ShortestPath] = shortestCorrectPath;
+        typeToPathDic[GameType.NoLeftTurn] = leftCorrectPath;
+        typeToPathDic[GameType.Jump] = jumpCorrectPath;
     }
     public void SetDic(GameObject[] map)
     {
@@ -85,7 +103,10 @@ public class MapManager : MonoBehaviour
 
         Debug.Log($"Collider Dictionary 등록 완료 ({colliderToIndex.Count}개)");
     }
-
+    public Transform[] GetCorrectPath(GameType type , Difficulty difficulty)
+    {
+        return typeToPathDic[type][(int)difficulty].path;
+    }
 
     private void InitArrow()
     {

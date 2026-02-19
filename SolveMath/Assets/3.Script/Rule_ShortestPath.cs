@@ -104,4 +104,9 @@ public class Rule_ShortestPath : MonoBehaviour, IGameRule
     private void ee()
     {
     }
+
+    public void VeiwHint()
+    {
+        throw new System.NotImplementedException();
+    }
 }

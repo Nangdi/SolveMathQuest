@@ -8,9 +8,12 @@ public class Rule_NoLeftTurn : MonoBehaviour, IGameRule
     public Vector2 currentPos;
     public Vector2 previousPos;
     public int headDir;
+    public Transform[] correctPath;
 
-    
-
+    private void Start()
+    {
+        //MazeSolutionLineAnimator.instance.CorectLineSetting(MapManager.instance.leftCorrectPath[0].path);
+    }
     public bool isRuleViolated(Collider2D col)
     {
 
@@ -91,5 +94,9 @@ public class Rule_NoLeftTurn : MonoBehaviour, IGameRule
             case Difficulty.Hard:
                 break;
         }
+    }
+
+    public void VeiwHint()
+    {
     }
 }

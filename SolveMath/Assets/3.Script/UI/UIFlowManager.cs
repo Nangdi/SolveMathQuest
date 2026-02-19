@@ -40,6 +40,7 @@ public class UIFlowManager : MonoBehaviour
         spriteSwaper.SwapDifficultySprite();
         //난이도, 모드에 맞는 맵 켜주기 
         ActiveMap(currentModedIndex, currentDifficultyIndex);
+        GameManager.instance.player.MoveStartPoint();
 
     }
     public void SelectGameMode(int index)
@@ -126,5 +127,9 @@ public class UIFlowManager : MonoBehaviour
         FloorScreens[0].SetActive(true);
         JumpScene(0);
         GameManager.instance.ResetGame();
+    }
+    public GameObject GetCurrentMap()
+    {
+        return gameMaps[currentModedIndex].maps[currentDifficultyIndex];
     }
 }

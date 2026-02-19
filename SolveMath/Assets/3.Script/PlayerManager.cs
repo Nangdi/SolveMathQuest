@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class PlayerManager : MonoBehaviour
 {
@@ -11,6 +12,7 @@ public class PlayerManager : MonoBehaviour
     public readonly float worldWidth = 5.6f;   // X축 크기
     public readonly float worldHeight = 5.6f;  // Z축 크기
     Vector2 targetPos;
+    public Vector2 startPos;
 
     [Header("PlayerInfo")]
     public string playerName;
@@ -34,6 +36,7 @@ public class PlayerManager : MonoBehaviour
         float worldX = (lidarPos.x - 0.5f) * worldWidth;
         float worldZ = (lidarPos.y-0.5f) * worldHeight;
 
+        //플레이어 위치 매핑 크기 , 위치 조정
         // 위치 반영
         targetPos = new Vector2(worldX, worldZ);
         
@@ -58,7 +61,7 @@ public class PlayerManager : MonoBehaviour
                 GameManager.instance.gameRule.ResetData(collision);
                 //스타트문구띄우고 도착 시 카운트다운 시작 3초 후 -> 게임스타트
                 
-                GameManager.instance.GameStart();
+                //GameManager.instance.GameStart();
             }
             if (GameManager.instance.Paused)
             {
@@ -94,7 +97,31 @@ public class PlayerManager : MonoBehaviour
 
     }
 
-   
-   
-    
+    public void MoveStartPoint()
+    {
+        Debug.Log("플레이어 시작위치로이동");
+        if (startPos == Vector2.zero)
+        {
+
+            GameObject mapObject = GameManager.instance.uiFlowManager.GetCurrentMap();
+            Transform mapTf = mapObject.transform;
+            for (int i = 0; i < mapTf.childCount; i++)
+            {
+                for (int j = 0; j < mapTf.GetChild(i).childCount; j++)
+                {
+                    if (mapTf.GetChild(i).GetChild(j).gameObject.CompareTag("Start"))
+                    {
+                        startPos = mapTf.GetChild(i).GetChild(j).position;
+                        break;
+                    }
+
+                }
+            }
+        }
+
+        gameObject.transform.position = startPos;
+
+    }
+
+
 }

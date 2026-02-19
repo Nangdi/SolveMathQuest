@@ -93,4 +93,9 @@ public class Rule_Number : MonoBehaviour, IGameRule
     {
         currentPos = MapManager.instance.colliderToIndex[col];
     }
+
+    public void VeiwHint()
+    {
+        throw new System.NotImplementedException();
+    }
 }

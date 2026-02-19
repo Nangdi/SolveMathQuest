@@ -165,4 +165,8 @@ public class Rule_Arrow : MonoBehaviour, IGameRule
                 break;
         }
     }
+
+    public void VeiwHint()
+    {
+    }
 }

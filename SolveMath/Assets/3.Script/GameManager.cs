@@ -15,8 +15,8 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
 
-    [SerializeField] private UIFlowManager uiFlowManager;
     [SerializeField] private GameSessionManager sessionManager;
+    public UIFlowManager uiFlowManager;
     public GameType gameType;
     public IGameRule gameRule;
     public Difficulty difficultyMode;
@@ -27,7 +27,9 @@ public class GameManager : MonoBehaviour
     public int life = 3;
     public float time= 300;
     public float elapsedTime;
+    public int useHintNum =0;
 
+    public PlayerManager player;
 
 
     private void Awake()
@@ -46,9 +48,7 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
 
-        //SetGameRule(GameType.Arrow);
-        //difficultyMode = Difficulty.Normal;
-        //gameRule.SetDifficultMode(difficultyMode);
+        GameObject.FindGameObjectWithTag("Player").TryGetComponent(out player);
     }
     private void Update()
     {
@@ -74,8 +74,8 @@ public class GameManager : MonoBehaviour
         Paused = true;
         sessionManager.pauseScreen.SetActive(true);
         sessionManager.LoseLife(life);
+        player.MoveStartPoint();
         Debug.Log($"라이프감소 남은라이프 : {life} , 게임 일시정지 시작위치로 돌아가세요");
-
         if (life < 1)
         {
             // TODO: 게임오버 처리
@@ -90,6 +90,7 @@ public class GameManager : MonoBehaviour
         elapsedTime = 0;
         Paused = false;
         startGame = false;
+        player.startPos = Vector2.zero;
         sessionManager.ResetUIState();
     }
     public void ReStart()

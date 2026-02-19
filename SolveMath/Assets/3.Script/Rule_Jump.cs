@@ -94,4 +94,9 @@ public class Rule_Jump : MonoBehaviour, IGameRule
                 break;
         }
     }
+
+    public void VeiwHint()
+    {
+        throw new System.NotImplementedException();
+    }
 }

@@ -10,8 +10,10 @@ public enum Difficulty
 
 public interface IGameRule 
 {
+
     public bool isRuleViolated(Collider2D col);
     public void ResetData(Collider2D col);
     public bool GameClear(Collider2D col);
     public void SetDifficultMode(Difficulty difficulty);
+    public void VeiwHint();
 }
