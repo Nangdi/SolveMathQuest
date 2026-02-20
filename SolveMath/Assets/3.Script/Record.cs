@@ -12,7 +12,7 @@ public class Record : MonoBehaviour
     public TMP_Text ranking_text;
     public TMP_Text rankerName_text;
     public TMP_Text record_text;
-    public int ranking;
+    public int ranking =99;
     public string rankerName;
     public float record;
 
@@ -24,14 +24,22 @@ public class Record : MonoBehaviour
     public void SetRecord(int ranking , string rankerName , string recordTime)
     {
         UpdatePrizeImage(ranking);
-        ranking_text.text = ranking.ToString();
+        if(ranking == 0)
+        {
+            ranking_text.text = "-";
+        }
+        else
+        {
+            ranking_text.text = ranking.ToString();
+
+        }
         rankerName_text.text = rankerName;
         record_text.text = recordTime;
     }
 
     private void UpdatePrizeImage(int ranking)
     {
-        if (ranking < 4)
+        if (ranking < 4 && ranking >0)
         {
             prizeImage.gameObject.SetActive(true);
             prizeImage.sprite = prizeSprites[ranking - 1];

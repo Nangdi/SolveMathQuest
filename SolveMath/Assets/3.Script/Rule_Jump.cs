@@ -29,6 +29,7 @@ public class Rule_Jump : MonoBehaviour, IGameRule
         int dy = currentPos.y - previousPos.y;
         Vector2Int dir = new Vector2Int(dx, dy);
             moveCount--;
+        Debug.Log($"무브 카운트 : {moveCount}");
         //초기화상태일시 
         if (movingDir == Vector2Int.zero)
         {
@@ -36,7 +37,7 @@ public class Rule_Jump : MonoBehaviour, IGameRule
         }
         else if(movingDir != dir)
         {
-            Debug.Log("진행방향틀림");
+            Debug.Log($"진행방향틀림 {movingDir} , {dir}");
             return true;
         }
         if(col.CompareTag("Arrive") && moveCount != 0)

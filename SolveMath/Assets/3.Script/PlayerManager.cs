@@ -58,14 +58,15 @@ public class PlayerManager : MonoBehaviour
         {
             if (!GameManager.instance.startGame)
             {
-                GameManager.instance.gameRule.ResetData(collision);
                 //스타트문구띄우고 도착 시 카운트다운 시작 3초 후 -> 게임스타트
-                
                 //GameManager.instance.GameStart();
+                Debug.Log("게임 시작");
+
             }
             if (GameManager.instance.Paused)
             {
-                GameManager.instance.Paused = false;
+                //GameManager.instance.Paused = false;
+                GameManager.instance.gameRule.ResetData(collision);
                 Debug.Log("게임 재시작");
                 return;
             }
@@ -103,25 +104,35 @@ public class PlayerManager : MonoBehaviour
         if (startPos == Vector2.zero)
         {
 
-            GameObject mapObject = GameManager.instance.uiFlowManager.GetCurrentMap();
-            Transform mapTf = mapObject.transform;
-            for (int i = 0; i < mapTf.childCount; i++)
-            {
-                for (int j = 0; j < mapTf.GetChild(i).childCount; j++)
-                {
-                    if (mapTf.GetChild(i).GetChild(j).gameObject.CompareTag("Start"))
-                    {
-                        startPos = mapTf.GetChild(i).GetChild(j).position;
-                        break;
-                    }
-
-                }
-            }
+            Transform startTf = FindStartTF();
+            startPos = startTf.position;
         }
 
         gameObject.transform.position = startPos;
 
     }
+    public Transform FindStartTF()
+    {
+        GameObject mapObject = GameManager.instance.uiFlowManager.GetCurrentMap();
+        Transform mapTf = mapObject.transform;
+        for (int i = 0; i < mapTf.childCount; i++)
+        {
+            for (int j = 0; j < mapTf.GetChild(i).childCount; j++)
+            {
+                if (mapTf.GetChild(i).GetChild(j).gameObject.CompareTag("Start"))
+                {
+                    return mapTf.GetChild(i).GetChild(j);
+                }
 
+            }
+        }
+        Debug.Log("시작위치찾지못함");
+        return null;
+    }
+    public void ResetPlayerState()
+    {
+        clearTime = 0;
+        isClear = false;
+    }
 
 }

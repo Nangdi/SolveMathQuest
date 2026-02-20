@@ -24,18 +24,21 @@ public class ResultDBController : MonoBehaviour
     }
     private void OnEnable()
     {
-        //if (!playerManager.isClear) return;
-
-        db.AddRecord(playerManager.playerName, playerManager.clearTime);
-
-        // 2️⃣ 내 순위 가져오기
-        if (db.TryGetMyRankAndTime(playerManager.playerName, out int r, playerManager.clearTime))
+        if (playerManager.isClear)
         {
-            Debug.Log($"내 순위={r}, 내 기록={playerManager.clearTime:F2}");
-            myRecord.SetRecord(r, playerManager.playerName, $"{playerManager.clearTime:F2}");
+            db.AddRecord(playerManager.playerName, playerManager.clearTime, (int)GameManager.instance.gameType, (int)GameManager.instance.difficultyMode);
+
+            // 2️⃣ 내 순위 가져오기
+            if (db.TryGetRankByClearTime(playerManager.clearTime, (int)GameManager.instance.gameType, (int)GameManager.instance.difficultyMode, out int r))
+            {
+                Debug.Log($"내 순위={r}, 내 기록={playerManager.clearTime:F2}");
+                myRecord.SetRecord(r, playerManager.playerName, $"{playerManager.clearTime:F2}");
+            }
         }
+
+       
         // 3️⃣ Top100 출력
-        db.ApplyTopRecordsToUI(20);
+        db.ApplyTopRecordsToUI((int)GameManager.instance.gameType, (int)GameManager.instance.difficultyMode , 20);
         //bool d = db.TryGetMyRankAndTime(playerManager.name);
 
 

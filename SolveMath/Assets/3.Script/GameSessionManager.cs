@@ -56,11 +56,12 @@ public class GameSessionManager : MonoBehaviour
     }
     public void ResetUIState()
     {
-        for (int i = 0; i > 3; i++)
+        for (int i = 0; i < 3; i++)
         {
             floorLifes[i].SetActive(true);
             kioskLifes[i].SetActive(true);
         }
+            Debug.Log("라이프 그림 초기화");
         UpdateSliderValue(300);
         UpdateTimeText(300);
     }
