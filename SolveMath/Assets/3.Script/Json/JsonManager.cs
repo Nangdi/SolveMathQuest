@@ -5,6 +5,14 @@ using System.IO;
 using UnityEngine;
 public class GameSettingData
 {
+    public bool useUnityOnTop;
+    public int[] displayIndex = new int[] { 0, 1, 2 };
+    public Vector2 mappingPos = new Vector2(-1.82f, 0.82f);
+    public Vector2 mappingScale = new Vector2(4.35f, 4.35f);
+    public bool useClickDebug = false;
+}
+public class GameDynamicData
+{
 }
 public class PortJson
 {
@@ -18,8 +26,15 @@ public class JsonManager : MonoBehaviour
     public static JsonManager instance;
     public GameSettingData gameSettingData;
     public PortJson portJson;
+    public GameDynamicData gameDynamicData;
     private string gameDataPath;
+    private string gameDynamicDataPath;
     private string portPath;
+
+    [Header("Custom")]
+    [SerializeField]
+    private playerMovementController playerMovementController;
+
     private void Awake()
     {
         if (instance == null)
@@ -33,12 +48,17 @@ public class JsonManager : MonoBehaviour
         }
 
         portPath = Path.Combine(Application.streamingAssetsPath, "port.json");
+        gameDynamicDataPath = Path.Combine(Application.streamingAssetsPath, "Setting.json");
         gameDataPath = Path.Combine(Application.persistentDataPath, "gameSettingData.json");
-
+        //gameSettingData.displayIndex = new int[] { 0, 1, 2 };
         gameSettingData = LoadData(gameDataPath, gameSettingData);
-        portJson= LoadData(portPath, portJson);
+        gameDynamicData = LoadData(gameDynamicDataPath, gameDynamicData);
+        portJson = LoadData(portPath, portJson);
     }
-
+    private void Start()
+    {
+        playerMovementController.gameObject.SetActive(gameSettingData.useClickDebug);
+    }
     //저장할 json 객체 , 경로설정
     public static void SaveData<T>(T jsonObject, string path) where T : new()
     {

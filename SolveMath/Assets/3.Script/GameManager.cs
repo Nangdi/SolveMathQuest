@@ -52,10 +52,6 @@ public class GameManager : MonoBehaviour
     }
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Q))
-        {
-            GameStart();
-        }
         if (!startGame) return;
         if (Paused) return;
         elapsedTime += Time.deltaTime;
@@ -73,6 +69,7 @@ public class GameManager : MonoBehaviour
         life--;
         Paused = true;
         sessionManager.LoseLife(life);
+        player.ResetPlayerState();
         Debug.Log($"라이프감소 남은라이프 : {life} , 게임 일시정지 시작위치로 돌아가세요");
         if (life < 1)
         {
