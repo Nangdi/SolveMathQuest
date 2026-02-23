@@ -73,7 +73,6 @@ public class GameManager : MonoBehaviour
         Debug.Log($"라이프감소 남은라이프 : {life} , 게임 일시정지 시작위치로 돌아가세요");
         if (life < 1)
         {
-            // TODO: 게임오버 처리
             // player 정
             ResultGame(false);
             Debug.Log("게임오버");

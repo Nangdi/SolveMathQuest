@@ -5,6 +5,15 @@ using System.Text;
 using System.Threading;
 using System.Collections.Generic;
 using UnityEditor.VersionControl;
+using System;
+
+[Serializable]
+public class LidarData
+{
+    public int touchId;
+    public int stateId;
+    public Vector2 pos;
+}
 
 public class LidarUDPReceiver : MonoBehaviour
 {
@@ -15,6 +24,10 @@ public class LidarUDPReceiver : MonoBehaviour
 
     public Vector2[] riderData;
     [SerializeField] private PlayerManager playerManager;
+    [SerializeField] private LidarTouchManager lidarTouchManager;
+    public LidarData[] lidarDatas;
+    [SerializeField]
+    private playerMenu playerMenu;
     void Start()
     {
         udp = new UdpClient(port);
@@ -26,26 +39,51 @@ public class LidarUDPReceiver : MonoBehaviour
     }
 
 
-  
+
 
     void Update()
     {
         if (!string.IsNullOrEmpty(latestMessage))
         {
-            //Debug.Log("받은 데이터: " + latestMessage);
-            riderData = Parseessage(latestMessage);
-            if (riderData.Length != 0)
+            lidarDatas = Parseessage(latestMessage);
+            if (lidarDatas.Length != 0)
             {
+                //Debug.Log("받은 데이터: " + latestMessage);
                 //Debug.Log(riderData[2]);
-                playerManager.SetPlayerPosition(riderData[2]);
-                //두명이상 인식시 게임스탑
+                LidarData firstData = FindTargetPos(0);
+                LidarData secondData = FindTargetPos(1);
+                if (firstData != null && (!GameManager.instance.startGame || GameManager.instance.Paused))
+                {
+                    playerManager.SetPlayerPosition(firstData.pos);
+                }
+                if (secondData != null)
+                {
+                    if (secondData.stateId == 2)
+                    {
+                        bool Touchmenu = lidarTouchManager.CheckHit(secondData.pos);
+                        if (Touchmenu)
+                        {
+                            playerMenu.SetRotating(false);
+                        }
+                        else
+                        {
+                            playerMenu.SetRotating(true);
+                        }
+                        
+
+                    }
+                }
+                if (lidarDatas.Length > 3)
+                {
+                    //두명이상 인식시 게임스탑 todo
+                }
 
             }
             latestMessage = null; // 한 번만 찍고 초기화
         }
         else
         {
-            Debug.Log($"아무도 안들어온 상태");
+            //Debug.Log($"아무도 안들어온 상태");
             //여기서 타이머 작동 일정시간 경과 시 -> 대기화면
             //
         }
@@ -60,12 +98,12 @@ public class LidarUDPReceiver : MonoBehaviour
         }
     }
 
-    private Vector2[] Parseessage(string message)
+    private LidarData[] Parseessage(string message)
     {
         // 1. '|' 기준으로 Split
-        string[] parts = message.Split('|'); 
+        string[] parts = message.Split('|');
 
-        List<Vector2> vectors = new List<Vector2>();
+        List<LidarData> vectors = new List<LidarData>();
 
         foreach (string part in parts)
         {
@@ -75,24 +113,46 @@ public class LidarUDPReceiver : MonoBehaviour
             // 2. '&' 기준 Split
             string[] segments = part.Split('&');
 
-            foreach (string seg in segments)
+            LidarData lidarData = new LidarData();
+            string[] xy1 = segments[1].Split(',');
+            if (xy1.Length == 2)
             {
-                string[] xy = seg.Split(',');
-                if (xy.Length == 2)
+                if (float.TryParse(xy1[0], out float x) &&
+                    float.TryParse(xy1[1], out float y))
                 {
-                    if (float.TryParse(xy[0], out float x) &&
-                        float.TryParse(xy[1], out float y))
-                    {
-                        vectors.Add(new Vector2(x, y));
-                    }
+
+                    lidarData.touchId = (int)x;
+                    lidarData.stateId = (int)y;
                 }
             }
+            string[] xy2 = segments[2].Split(',');
+            if (xy2.Length == 2)
+            {
+                if (float.TryParse(xy2[0], out float x) &&
+                    float.TryParse(xy2[1], out float y))
+                {
+
+                    lidarData.pos = new Vector2(x, y);
+                }
+            }
+            vectors.Add(lidarData);
         }
 
         // 3. Vector2[3] 리턴 (길이가 다르면 가능한 만큼만 채움)
         return vectors.ToArray();
     }
+    private LidarData FindTargetPos(int id)
+    {
+        foreach (var data in lidarDatas)
+        {
+            if (data.touchId == id )
+            {
+                return data;
+            }
 
+        }
+        return null;
+    }
     private void OnApplicationQuit()
     {
         if (receiveThread != null) receiveThread.Abort();

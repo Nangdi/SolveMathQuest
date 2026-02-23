@@ -10,10 +10,12 @@ public class playerMovementController : MonoBehaviour
 
     void Update()
     {
+
+        Vector3 mp = Input.mousePosition;
         if (Input.GetMouseButtonDown(0))
         {
             Vector2 mouseWorld = cam.ScreenToWorldPoint(Input.mousePosition);
-
+                Debug.Log($"로컬 좌표 : {mouseWorld}");
             RaycastHit2D hit = Physics2D.Raycast(mouseWorld, Vector2.zero);
 
             if (hit.collider != null)
@@ -22,6 +24,7 @@ public class playerMovementController : MonoBehaviour
 
                 // 월드 → 로컬
                 Vector2 localPos = t.InverseTransformPoint(mouseWorld);
+                //Vector2 localPos = t.TransformPoint(mouseWorld);
 
                 // 스프라이트 실제 월드 크기
                 //Vector2 size = spriteRenderer.bounds.size;

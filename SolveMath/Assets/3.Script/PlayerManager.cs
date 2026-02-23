@@ -47,12 +47,11 @@ public class PlayerManager : MonoBehaviour
         circleMaskManager.SetCirclePosition(lidarPos);
         targetPos = new Vector2(worldX, worldZ);
 
-        Debug.Log($"플레이어 좌표 변환: {lidarPos} → {transform.position}");
+        //Debug.Log($"플레이어 좌표 변환: {lidarPos} → {transform.position}");
     }
     
     private void Update()
     {
-        //라이더사용시 다시 활성화 todo
         if (Input.GetKeyDown(KeyCode.Q))
         {
             
@@ -86,8 +85,6 @@ public class PlayerManager : MonoBehaviour
                 Debug.Log("게임 재시작");
                 return;
             }
-            //재시작은 현재위치에서 해야함 /todo
-            //Debug.Log("아무일도없음");
             return;
 
 
@@ -101,7 +98,6 @@ public class PlayerManager : MonoBehaviour
             GameManager.instance.Fail();
         }else if (GameManager.instance.gameRule.GameClear(collision))
         {
-            //게임매니저 게임클리어 로직 todo
             //성공시 성공화면 전환
             
             Debug.Log("게임클리어!");
