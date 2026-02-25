@@ -6,6 +6,7 @@ using System.Threading;
 using System.Collections.Generic;
 using UnityEditor.VersionControl;
 using System;
+using UnityEngine.EventSystems;
 
 [Serializable]
 public class LidarData
@@ -28,6 +29,7 @@ public class LidarUDPReceiver : MonoBehaviour
     public LidarData[] lidarDatas;
     [SerializeField]
     private playerMenu playerMenu;
+    public SpriteRenderer[] debugPoints;
     void Start()
     {
         udp = new UdpClient(port);
@@ -36,6 +38,10 @@ public class LidarUDPReceiver : MonoBehaviour
         receiveThread.Start();
 
         Debug.Log("UDP 수신 시작 (포트 " + port + ")");
+        for (int i = 0; i < debugPoints.Length; i++)
+        {
+            debugPoints[i].enabled = false;
+        }
     }
 
 
@@ -50,36 +56,62 @@ public class LidarUDPReceiver : MonoBehaviour
             {
                 //Debug.Log("받은 데이터: " + latestMessage);
                 //Debug.Log(riderData[2]);
-                LidarData firstData = FindTargetPos(0);
-                LidarData secondData = FindTargetPos(1);
-                if (firstData != null && (!GameManager.instance.startGame || GameManager.instance.Paused))
+                //표시했던 디버그 ob false
+                for (int i = 0; i < debugPoints.Length; i++)
                 {
-                    playerManager.SetPlayerPosition(firstData.pos);
+                    debugPoints[i].enabled = false;
                 }
-                if (secondData != null)
+                for (int i = 0; i < lidarDatas.Length; i++)
                 {
-                    if (secondData.stateId == 2)
+                    debugPoints[i].enabled = true;
+                    debugPoints[i].transform.position = lidarTouchManager.Map01ToWorldPos(lidarDatas[i].pos);
+                    //lidarDatas 포지션에 해당하는 곳 디버그
+                    //위치 이동 , alpha = 0
+                }
+
+                LidarData firstData = lidarDatas[0];
+                if (firstData != null && (GameManager.instance.startGame && !GameManager.instance.Paused))
+                {
+                    if (!playerMenu.openMenu)
                     {
-                        bool Touchmenu = lidarTouchManager.CheckHit(secondData.pos);
-                        if (Touchmenu)
-                        {
-                            playerMenu.SetRotating(false);
-                        }
-                        else
-                        {
-                            playerMenu.SetRotating(true);
-                        }
-                        
+                        playerManager.SetPlayerPosition(firstData.pos);
 
                     }
                 }
-                if (lidarDatas.Length > 3)
+                LidarData secondData = new LidarData();
+                if (lidarDatas.Length > 1)
                 {
-                    //두명이상 인식시 게임스탑 todo
+                    secondData = lidarDatas[1];
+                    if (secondData != null)
+                    {
+                        if (secondData.stateId == 2)
+                        {
+                            bool Touchmenu = lidarTouchManager.CheckHit(secondData.pos);
+                            playerMenu.SetStopRotating(Touchmenu);
+
+                        }
+                        if (secondData.stateId == 1)
+                        {
+                            lidarTouchManager.ClickScreenbylidar(secondData.pos);
+
+                        }
+                    }
+                    else
+                    {
+                        if (!playerMenu.openMenu)
+                        {
+
+                            playerMenu.MenuReset();
+                        }
+                    }
+                    if (lidarDatas.Length > 3)
+                    {
+                        //두명이상 인식시 게임스탑 todo
+                    }
                 }
+               
 
             }
-            latestMessage = null; // 한 번만 찍고 초기화
         }
         else
         {
@@ -87,6 +119,7 @@ public class LidarUDPReceiver : MonoBehaviour
             //여기서 타이머 작동 일정시간 경과 시 -> 대기화면
             //
         }
+        latestMessage = null; // 한 번만 찍고 초기화
     }
     private void ReceiveData()
     {
