@@ -15,7 +15,7 @@ public class playerMovementController : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             Vector2 mouseWorld = cam.ScreenToWorldPoint(Input.mousePosition);
-                Debug.Log($"·ÎÄÃ ÁÂÇ¥ : {mouseWorld}");
+                //Debug.Log($"·ÎÄÃ ÁÂÇ¥ : {mouseWorld}");
             RaycastHit2D hit = Physics2D.Raycast(mouseWorld, Vector2.zero);
 
             if (hit.collider != null)
@@ -32,7 +32,7 @@ public class playerMovementController : MonoBehaviour
                 float u = localPos.x + 0.5f;
                 float v = localPos.y + 0.5f;
                 Vector2 normalizationPos = new Vector2(u, v);
-                Debug.Log($"Á¤±ÔÈ­ ÁÂÇ¥ : {u :F2}, {v:F2}");
+                //Debug.Log($"Á¤±ÔÈ­ ÁÂÇ¥ : {u :F2}, {v:F2}");
                 player.SetPlayerPosition(normalizationPos);
             }
         }

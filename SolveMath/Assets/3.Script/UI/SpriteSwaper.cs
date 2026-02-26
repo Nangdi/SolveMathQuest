@@ -12,6 +12,7 @@ public class SpriteSwaper : MonoBehaviour
     [Header("°á°úÃ¢")]
     [SerializeField]
     private Image resultImage;
+    public Image floorResultImage;
     [SerializeField]
     private Image frameImage;
     [SerializeField]
@@ -54,19 +55,18 @@ public class SpriteSwaper : MonoBehaviour
         {
             targetImages[6].sprite = uiData.descriptionSprites[0];
             targetImages[6].SetNativeSize();
-            targetImages[10].sprite = uiData.descriptionSprites[0];
-            targetImages[10].SetNativeSize();
+            targetImages[9].sprite = uiData.descriptionSprites[0];
+            targetImages[9].SetNativeSize();
         }
         else
         {
             targetImages[6].sprite = uiData.descriptionSprites[difficultyIndex];
             targetImages[6].SetNativeSize();
-            targetImages[10].sprite = uiData.descriptionSprites[difficultyIndex];
-            targetImages[10].SetNativeSize();
+            targetImages[9].sprite = uiData.descriptionSprites[difficultyIndex];
+            targetImages[9].SetNativeSize();
         }
         targetImages[7].sprite = difficultUIs[difficultyIndex];
         targetImages[8].sprite = difficultUIs[difficultyIndex];
-        targetImages[9].sprite = uiData.mapSprites[difficultyIndex];
     }
     public void SwapResultSprite(bool isClear)
     {
@@ -74,12 +74,16 @@ public class SpriteSwaper : MonoBehaviour
         {
             resultImage.sprite = resultSprites[0];
             frameImage.sprite = frameSprites[0];
+            floorResultImage.sprite = resultSprites[2];
         }
         else
         {
             resultImage.sprite = resultSprites[1];
             frameImage.sprite = frameSprites[1];
+            floorResultImage.sprite = resultSprites[3];
 
         }
+        floorResultImage.gameObject.SetActive(true);
     }
+
 }

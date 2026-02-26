@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 [Serializable]
 public class Map
 {
@@ -12,8 +13,7 @@ public class Map
 
 public class UIFlowManager : MonoBehaviour
 {
-    [SerializeField]
-    private SpriteSwaper spriteSwaper;
+    public SpriteSwaper spriteSwaper;
     [SerializeField]
     private int currentFlowIndex = 0;
     private int currentModedIndex = 0;
@@ -27,6 +27,8 @@ public class UIFlowManager : MonoBehaviour
     private GameObject myRecord;
     [SerializeField]
     private GameObject[] FloorScreens;
+
+    public Button hintYesBtn;
     private void Start()
     {
         AllDeactiveMap();
@@ -125,8 +127,9 @@ public class UIFlowManager : MonoBehaviour
             FloorScreens[i].SetActive(false);
         }
         FloorScreens[0].SetActive(true);
+        FloorScreens[1].SetActive(true);
         JumpScene(0);
-        GameManager.instance.ResetGame();
+        AllDeactiveMap();
     }
     public GameObject GetCurrentMap()
     {

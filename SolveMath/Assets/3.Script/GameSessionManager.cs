@@ -41,9 +41,9 @@ public class GameSessionManager : MonoBehaviour
         timeText_Floor.text = $"{minutes:00}:{seconds:00}";
         UpdateSliderValue(currentTime);
     }
-    public void LoseLife(int life)
+    public void LoseLife(int currentLife)
     {
-        for (int i = 0; i < 3-life; i++)
+        for (int i = 0; i < 3-currentLife; i++)
         {
             floorLifes[i].SetActive(false);
             kioskLifes[i].SetActive(false);

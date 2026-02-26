@@ -26,6 +26,7 @@ public class LidarUDPReceiver : MonoBehaviour
     public Vector2[] riderData;
     [SerializeField] private PlayerManager playerManager;
     [SerializeField] private LidarTouchManager lidarTouchManager;
+    [SerializeField] private SceneTimer sceneTimer;
     public LidarData[] lidarDatas;
     [SerializeField]
     private playerMenu playerMenu;
@@ -56,6 +57,9 @@ public class LidarUDPReceiver : MonoBehaviour
             {
                 //Debug.Log("받은 데이터: " + latestMessage);
                 //Debug.Log(riderData[2]);
+                //씬타이머 값 초기화 (사람 존재함)
+                sceneTimer.isRunning = true;
+                sceneTimer.lapseTime = 0;
                 //표시했던 디버그 ob false
                 for (int i = 0; i < debugPoints.Length; i++)
                 {
@@ -107,11 +111,17 @@ public class LidarUDPReceiver : MonoBehaviour
                     if (lidarDatas.Length > 3)
                     {
                         //두명이상 인식시 게임스탑 todo
+                        Debug.Log($"2명이상 인식, 게임중지");
                     }
                 }
-               
+
 
             }
+            //아무런 감지가 없을때 
+            else
+            {
+            }
+            
         }
         else
         {
@@ -120,6 +130,7 @@ public class LidarUDPReceiver : MonoBehaviour
             //
         }
         latestMessage = null; // 한 번만 찍고 초기화
+        lidarDatas = null;
     }
     private void ReceiveData()
     {

@@ -18,6 +18,7 @@ public class MazeSolutionLineAnimator : MonoBehaviour
     public int capVertices = 8;
     public int cornerVertices = 8;
     public int sortingOrder = 10;
+    public float lineSpeed = 0.5f;
 
     List<Vector3> path = new List<Vector3>();
 
@@ -66,11 +67,11 @@ public class MazeSolutionLineAnimator : MonoBehaviour
         //    new Vector3(6, 5, 0)
         //};
 
-        Play();
+        //Play();
     }
 
     /// <summary>정답 라인을 서서히 그리기 시작</summary>
-    public void Play()
+    public void Play(float speed)
     {
         Transform[] correctPath = MapManager.instance.GetCorrectPath(GameManager.instance.gameType , GameManager.instance.difficultyMode);
         CorectLineSetting(correctPath);
@@ -78,7 +79,7 @@ public class MazeSolutionLineAnimator : MonoBehaviour
         if (path == null || path.Count < 2) return;
 
         if (co != null) StopCoroutine(co);
-        co = StartCoroutine(AnimateDraw(path, 0.5f * path.Count));
+        co = StartCoroutine(AnimateDraw(path, speed * path.Count));
     }
 
     IEnumerator AnimateDraw(IReadOnlyList<Vector3> path, float drawDuration)
@@ -90,7 +91,7 @@ public class MazeSolutionLineAnimator : MonoBehaviour
         float pointsPerSecond = total / drawDuration;
 
         float t = 0f;
-        float endTime = drawDuration + pointLifetime; // 마지막 포인트가 사라질 때까지
+        float endTime = drawDuration + drawDuration; // 마지막 포인트가 사라질 때까지
 
         while (t < endTime)
         {
@@ -100,7 +101,7 @@ public class MazeSolutionLineAnimator : MonoBehaviour
             int head = Mathf.FloorToInt(t * pointsPerSecond);
 
             // tail: (t - pointLifetime) 이전에 등장했던 포인트들은 제거
-            int tail = Mathf.FloorToInt((t - pointLifetime) * pointsPerSecond);
+            int tail = Mathf.FloorToInt((t - lineSpeed*3) * pointsPerSecond);
 
             head = Mathf.Clamp(head, 0, total - 1);
             tail = Mathf.Clamp(tail, 0, total - 1);

@@ -37,7 +37,7 @@ public class LidarTouchManager : MonoBehaviour
                 playerMenu.SetStopRotating(false);
             }
 
-            Debug.Log("Clicked World Pos (2D): " + screenPos);
+            //Debug.Log("Clicked World Pos (2D): " + screenPos);
         }
     }
     public Vector2 Map01ToScreenPos(Vector2 map01)
