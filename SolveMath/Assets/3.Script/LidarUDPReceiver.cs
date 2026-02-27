@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using UnityEditor.VersionControl;
 using System;
 using UnityEngine.EventSystems;
+using DG.Tweening.Core.Easing;
 
 [Serializable]
 public class LidarData
@@ -31,6 +32,8 @@ public class LidarUDPReceiver : MonoBehaviour
     [SerializeField]
     private playerMenu playerMenu;
     public SpriteRenderer[] debugPoints;
+    public GameObject multiDetectPanel;
+    private int multiDetectCount=3;
     void Start()
     {
         udp = new UdpClient(port);
@@ -43,6 +46,7 @@ public class LidarUDPReceiver : MonoBehaviour
         {
             debugPoints[i].enabled = false;
         }
+        multiDetectCount = JsonManager.instance.gameSettingData.multiDetectCount;
     }
 
 
@@ -61,19 +65,29 @@ public class LidarUDPReceiver : MonoBehaviour
                 sceneTimer.isRunning = true;
                 sceneTimer.lapseTime = 0;
                 //표시했던 디버그 ob false
-                for (int i = 0; i < debugPoints.Length; i++)
+                DebugDetectPoint();
+                if (lidarDatas.Length >= multiDetectCount && GameManager.instance.startGame)
                 {
-                    debugPoints[i].enabled = false;
-                }
-                for (int i = 0; i < lidarDatas.Length; i++)
-                {
-                    debugPoints[i].enabled = true;
-                    debugPoints[i].transform.position = lidarTouchManager.Map01ToWorldPos(lidarDatas[i].pos);
-                    //lidarDatas 포지션에 해당하는 곳 디버그
-                    //위치 이동 , alpha = 0
-                }
+                    //두명이상 인식시 게임스탑 todo
+                    if (multiDetectPanel.activeSelf == false)
+                    {
+                        multiDetectPanel.SetActive(true);
+                        Debug.Log($"2명이상 인식, 게임중지");
+                        GameManager.instance.Paused = true;
+                        return;
 
-                LidarData firstData = lidarDatas[0];
+                    }
+
+                }
+                else
+                {
+                    if (multiDetectPanel.activeSelf == true)
+                    {
+                        multiDetectPanel.SetActive(false);
+
+                    }
+                }
+                    LidarData firstData = lidarDatas[0];
                 if (firstData != null && (GameManager.instance.startGame && !GameManager.instance.Paused))
                 {
                     if (!playerMenu.openMenu)
@@ -105,14 +119,10 @@ public class LidarUDPReceiver : MonoBehaviour
                         if (!playerMenu.openMenu)
                         {
 
-                            playerMenu.MenuReset();
+                            playerMenu.MenuValueReset();
                         }
                     }
-                    if (lidarDatas.Length > 3)
-                    {
-                        //두명이상 인식시 게임스탑 todo
-                        Debug.Log($"2명이상 인식, 게임중지");
-                    }
+                    
                 }
 
 
@@ -141,7 +151,21 @@ public class LidarUDPReceiver : MonoBehaviour
             latestMessage = Encoding.UTF8.GetString(data); // 변수에만 저장
         }
     }
+    private void DebugDetectPoint()
+    {
+        for (int i = 0; i < debugPoints.Length; i++)
+        {
+            debugPoints[i].enabled = false;
+        }
+        for (int i = 0; i < lidarDatas.Length; i++)
+        {
+            debugPoints[i].enabled = true;
+            debugPoints[i].transform.position = lidarTouchManager.Map01ToWorldPos(lidarDatas[i].pos);
+            //lidarDatas 포지션에 해당하는 곳 디버그
+            //위치 이동 , alpha = 0
+        }
 
+    }
     private LidarData[] Parseessage(string message)
     {
         // 1. '|' 기준으로 Split

@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using TMPro;
 using UnityEngine;
 public class GameSettingData
 {
@@ -10,6 +11,10 @@ public class GameSettingData
     public Vector2 mappingPos = new Vector2(-1.82f, 0.82f);
     public Vector2 mappingScale = new Vector2(4.35f, 4.35f);
     public bool useClickDebug = false;
+    public float ResetScreenTime = 120;
+    public int multiDetectCount = 3;
+    public float menuHoldTime = 3;
+
 }
 public class GameDynamicData
 {
@@ -35,6 +40,14 @@ public class JsonManager : MonoBehaviour
     [SerializeField]
     private playerMovementController playerMovementController;
 
+    public TMP_InputField screenReset_T;
+    public TMP_InputField lidarStopCount_T;
+    public TMP_InputField menuHoldTime_T;
+
+    [SerializeField]
+    private GameObject settingPanel;
+    [SerializeField]
+    private Transform MappingSquare;
     private void Awake()
     {
         if (instance == null)
@@ -58,6 +71,19 @@ public class JsonManager : MonoBehaviour
     private void Start()
     {
         playerMovementController.gameObject.SetActive(gameSettingData.useClickDebug);
+        Debug.Log($"제이슨 할다엩스트 : {gameSettingData.ResetScreenTime.ToString()}");
+        screenReset_T.text = gameSettingData.ResetScreenTime.ToString();
+        lidarStopCount_T.text = gameSettingData.multiDetectCount.ToString();
+        menuHoldTime_T.text = gameSettingData.menuHoldTime.ToString();
+        MappingSquare.transform.position = gameSettingData.mappingPos;
+        MappingSquare.transform.localScale = gameSettingData.mappingScale;
+    }
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            settingPanel.SetActive(!settingPanel.activeSelf);
+        }
     }
     //저장할 json 객체 , 경로설정
     public static void SaveData<T>(T jsonObject, string path) where T : new()
@@ -86,5 +112,15 @@ public class JsonManager : MonoBehaviour
         //예시 실행코드
         //JsonManager.LoadData(파일경로 , 데이터클래스);
 
+    }
+    public void SaveData()
+    {
+       gameSettingData.ResetScreenTime = float.Parse(screenReset_T.text);
+       gameSettingData.multiDetectCount = int.Parse(lidarStopCount_T.text);
+       gameSettingData.menuHoldTime = float.Parse(menuHoldTime_T.text);
+        gameSettingData.mappingPos = MappingSquare.position;
+       gameSettingData.mappingScale = MappingSquare.localScale;
+
+        SaveData(gameSettingData , gameDataPath);
     }
 }

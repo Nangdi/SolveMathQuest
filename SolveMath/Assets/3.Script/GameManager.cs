@@ -176,7 +176,7 @@ public class GameManager : MonoBehaviour
         currentData = datas[index];
         //모드 선택시 스프라이트 교체
     }
-    private void ResultGame(bool isClear)
+    public void ResultGame(bool isClear)
     {
         startGame = false;
         uiFlowManager.ChangeScene();
@@ -205,5 +205,9 @@ public class GameManager : MonoBehaviour
             hintSpeed = 1f;
         }
         hintAnimator.Play(hintSpeed);
+    }
+    public void WorkAfterHint()
+    {
+       Paused = false;
     }
 }

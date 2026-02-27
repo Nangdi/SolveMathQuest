@@ -91,7 +91,7 @@ public class MazeSolutionLineAnimator : MonoBehaviour
         float pointsPerSecond = total / drawDuration;
 
         float t = 0f;
-        float endTime = drawDuration + drawDuration; // 마지막 포인트가 사라질 때까지
+        float endTime = drawDuration + lineSpeed * 3; // 마지막 포인트가 사라질 때까지
 
         while (t < endTime)
         {
@@ -134,6 +134,7 @@ public class MazeSolutionLineAnimator : MonoBehaviour
 
         line.positionCount = 0;
         co = null;
+        GameManager.instance.WorkAfterHint();
     }
 
     /// <summary>

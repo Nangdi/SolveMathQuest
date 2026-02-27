@@ -1,11 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
-public class SceneTimer : MonoBehaviour
+public class multiDetectTimer : MonoBehaviour
 {
+
     public float lapseTime = 0;
-    private float resetTime = 60;
+    private float resetTime = 10;
     private bool _isRunning;
     public bool isRunning
     {
@@ -19,20 +22,34 @@ public class SceneTimer : MonoBehaviour
     }
     [SerializeField]
     private UIFlowManager uIFlowManager;
-    private void Start()
+    [SerializeField]
+    private TMP_Text timer;
+
+    private void OnEnable()
     {
-        resetTime = JsonManager.instance.gameSettingData.ResetScreenTime;
+        lapseTime = 0;
+        _isRunning = true;
+        timer.text = "10";
     }
     private void Update()
     {
         if (!_isRunning) return;
         lapseTime += Time.deltaTime;
-        if(lapseTime >= resetTime)
+        int countDown = 10 - (int)lapseTime;
+        timer.text = countDown.ToString();
+        if (lapseTime >= resetTime)
         {
             _isRunning = false;
+            gameObject.SetActive(false);
             uIFlowManager.ResetFloorScreen();
-           
+
 
         }
     }
+    private void OnDisable()
+    {
+        GameManager.instance.Paused = false;
+    }
 }
+
+
