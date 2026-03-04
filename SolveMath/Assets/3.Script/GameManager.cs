@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Timers;
-using UnityEditor.Searcher;
 using UnityEngine;
 public enum GameType
 {
@@ -17,6 +16,8 @@ public class GameManager : MonoBehaviour
 
     [SerializeField] private GameSessionManager sessionManager;
     [SerializeField] private MazeSolutionLineAnimator hintAnimator;
+
+    [SerializeField] private GameObject rePlayPanel;
     public UIFlowManager uiFlowManager;
     public GameType gameType;
     public IGameRule gameRule;
@@ -24,7 +25,7 @@ public class GameManager : MonoBehaviour
     public GameModeUIData[] datas;
     public GameModeUIData currentData;
     public bool startGame;
-    public bool Paused;
+    public bool Paused =true;
     private int _life = 3;
 
     public int life
@@ -114,7 +115,7 @@ public class GameManager : MonoBehaviour
         life = 3;
         hintCount = 0;
         elapsedTime = 0;
-        Paused = false;
+        Paused = true;
         startGame = false;
         sessionManager.ResetUIState();
         player.startPos = Vector2.zero;
@@ -132,6 +133,7 @@ public class GameManager : MonoBehaviour
     {
         ResetGame();
         startGame = true;
+        Paused = false;
         Debug.Log("게임스타트");
     }
     public void Clear()
@@ -208,6 +210,6 @@ public class GameManager : MonoBehaviour
     }
     public void WorkAfterHint()
     {
-       Paused = false;
+        rePlayPanel.SetActive(true);
     }
 }

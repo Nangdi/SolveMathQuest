@@ -40,26 +40,28 @@ public class PlayerManager : MonoBehaviour
     {
         //if (!GameManager.instance.startGame) return;
         // (0~1) → (-worldWidth/2 ~ +worldWidth/2, 0 ~ worldHeight)
-        float worldX = ((lidarPos.x - 0.5f)  * mappingScale.x) + mappingPos.x;
-        float worldZ = ((lidarPos.y-0.5f)  * mappingScale.y )+ mappingPos.y;
+        //mapping = Floor(Map) - MappingSquare 의 포지션과 스케일 
+        float worldX = ((lidarPos.x - 0.5f) * mappingScale.x) + mappingPos.x;
+        float worldZ = ((lidarPos.y - 0.5f) * mappingScale.y) + mappingPos.y;
         //플레이어 위치 매핑 크기 , 위치 조정
         // 위치 반영
         circleMaskManager.SetCirclePosition(lidarPos);
         targetPos = new Vector2(worldX, worldZ);
 
-        //Debug.Log($"플레이어 좌표 변환: {lidarPos} → {transform.position}");
+        Debug.Log($"플레이어 좌표 변환: {lidarPos} → {worldX}, {worldZ}");
     }
-    
+
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Q))
         {
-            
-            SetPlayerPosition(new Vector2(0.5f,0.5f));
+
+            SetPlayerPosition(new Vector2(0, 0));
         }
         if (targetPos == Vector2.zero) return;
-        transform.position = Vector2.Lerp(transform.position, targetPos, Time.deltaTime * 3f);
-        if(Vector2.Distance(transform.position , targetPos) < 0.001f)
+        //transform.position = Vector2.Lerp(transform.position, targetPos, Time.deltaTime * 3f);
+        transform.position = Vector2.MoveTowards(transform.position, targetPos, Time.deltaTime * 3f);
+        if (Vector2.Distance(transform.position, targetPos) < 0.001f)
         {
             transform.position = targetPos;
         }

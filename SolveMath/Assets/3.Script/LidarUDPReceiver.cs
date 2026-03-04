@@ -4,7 +4,6 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using System.Collections.Generic;
-using UnityEditor.VersionControl;
 using System;
 using UnityEngine.EventSystems;
 using DG.Tweening.Core.Easing;
@@ -24,7 +23,6 @@ public class LidarUDPReceiver : MonoBehaviour
     private int port = 19872; // InteractiveEngine에서 지정한 포트 번호
     private string latestMessage;
 
-    public Vector2[] riderData;
     [SerializeField] private PlayerManager playerManager;
     [SerializeField] private LidarTouchManager lidarTouchManager;
     [SerializeField] private SceneTimer sceneTimer;
@@ -33,7 +31,10 @@ public class LidarUDPReceiver : MonoBehaviour
     private playerMenu playerMenu;
     public SpriteRenderer[] debugPoints;
     public GameObject multiDetectPanel;
-    private int multiDetectCount=3;
+    private int multiDetectCount = 3;
+
+    LidarData firstData = new LidarData();
+    LidarData secondData = new LidarData();
     void Start()
     {
         udp = new UdpClient(port);
@@ -54,25 +55,31 @@ public class LidarUDPReceiver : MonoBehaviour
 
     void Update()
     {
-        if (!string.IsNullOrEmpty(latestMessage))
+        if (!string.IsNullOrEmpty(latestMessage) )
         {
+          
+
             lidarDatas = Parseessage(latestMessage);
+            sceneTimer.isRunning = true;
             if (lidarDatas.Length != 0)
             {
-                //Debug.Log("받은 데이터: " + latestMessage);
+                Debug.Log("받은 데이터: " + latestMessage);
                 //Debug.Log(riderData[2]);
                 //씬타이머 값 초기화 (사람 존재함)
-                sceneTimer.isRunning = true;
-                sceneTimer.lapseTime = 0;
-                //표시했던 디버그 ob false
+                sceneTimer.isRunning = false;
+                sceneTimer.isTrigger = false;
+                //sceneTimer.lapseTime = 0;
+
+                //감지되고있는 위치 포인트 오브젝트 업데이트
                 DebugDetectPoint();
-                if (lidarDatas.Length >= multiDetectCount && GameManager.instance.startGame)
+                if (!GameManager.instance.startGame) return;
+                if (lidarDatas.Length >= multiDetectCount )
                 {
-                    //두명이상 인식시 게임스탑 todo
-                    if (multiDetectPanel.activeSelf == false)
+                    //두명이상 인식시 게임스탑 
+                    if (multiDetectPanel.activeSelf == false && !GameManager.instance.Paused )
                     {
-                        multiDetectPanel.SetActive(true);
                         Debug.Log($"2명이상 인식, 게임중지");
+                        multiDetectPanel.SetActive(true);
                         GameManager.instance.Paused = true;
                         return;
 
@@ -83,20 +90,17 @@ public class LidarUDPReceiver : MonoBehaviour
                 {
                     if (multiDetectPanel.activeSelf == true)
                     {
+                        Debug.Log($"멀티감지 x , 게임재개");
                         multiDetectPanel.SetActive(false);
 
                     }
                 }
-                    LidarData firstData = lidarDatas[0];
-                if (firstData != null && (GameManager.instance.startGame && !GameManager.instance.Paused))
+                if (firstData != null && !GameManager.instance.Paused)
                 {
-                    if (!playerMenu.openMenu)
-                    {
-                        playerManager.SetPlayerPosition(firstData.pos);
+                    firstData = lidarDatas[0];
+                    playerManager.SetPlayerPosition(firstData.pos);
 
-                    }
                 }
-                LidarData secondData = new LidarData();
                 if (lidarDatas.Length > 1)
                 {
                     secondData = lidarDatas[1];
@@ -110,37 +114,21 @@ public class LidarUDPReceiver : MonoBehaviour
                         }
                         if (secondData.stateId == 1)
                         {
+                            //터치
                             lidarTouchManager.ClickScreenbylidar(secondData.pos);
 
                         }
                     }
-                    else
-                    {
-                        if (!playerMenu.openMenu)
-                        {
 
-                            playerMenu.MenuValueReset();
-                        }
-                    }
-                    
+
+
+
                 }
 
 
             }
-            //아무런 감지가 없을때 
-            else
-            {
-            }
-            
+                latestMessage = null; // 한 번만 찍고 초기화
         }
-        else
-        {
-            //Debug.Log($"아무도 안들어온 상태");
-            //여기서 타이머 작동 일정시간 경과 시 -> 대기화면
-            //
-        }
-        latestMessage = null; // 한 번만 찍고 초기화
-        lidarDatas = null;
     }
     private void ReceiveData()
     {
@@ -213,7 +201,7 @@ public class LidarUDPReceiver : MonoBehaviour
     {
         foreach (var data in lidarDatas)
         {
-            if (data.touchId == id )
+            if (data.touchId == id)
             {
                 return data;
             }

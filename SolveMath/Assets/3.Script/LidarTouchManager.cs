@@ -28,7 +28,7 @@ public class LidarTouchManager : MonoBehaviour
             // z 값은 카메라와의 거리
             screenPos.z = Mathf.Abs(uiCam.transform.position.z);
             bool Touchmenu = CheckHitMouseDebug(screenPos);
-            if (Touchmenu)
+            if (Touchmenu )
             {
                 playerMenu.SetStopRotating(true);
             }

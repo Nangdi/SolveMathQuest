@@ -7,6 +7,7 @@ public class SceneTimer : MonoBehaviour
     public float lapseTime = 0;
     private float resetTime = 60;
     private bool _isRunning;
+    public bool isTrigger;
     public bool isRunning
     {
         get => _isRunning;
@@ -25,11 +26,12 @@ public class SceneTimer : MonoBehaviour
     }
     private void Update()
     {
-        if (!_isRunning) return;
+        if (!_isRunning || isTrigger) return;
         lapseTime += Time.deltaTime;
         if(lapseTime >= resetTime)
         {
             _isRunning = false;
+            isTrigger = true;
             uIFlowManager.ResetFloorScreen();
            
 

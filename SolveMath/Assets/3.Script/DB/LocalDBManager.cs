@@ -157,7 +157,8 @@ public class LocalDBManager : MonoBehaviour
     public void ApplyTopRecordsToUI(int gameType, int difficulty, int limit = 20)
     {
         var top = GetTopRecords(gameType, difficulty, limit);
-
+        //if (top.Count == 0) return;
+ 
         for (int i = 0; i < recordRoot.childCount; i++)
         {
             var record = recordRoot.GetChild(i).GetComponent<Record>();

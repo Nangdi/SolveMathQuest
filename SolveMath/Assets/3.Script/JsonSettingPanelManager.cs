@@ -22,6 +22,8 @@ public class JsonSettingPanelManager : MonoBehaviour
     void Start()
     {
         
+        //mappingSqureRenderer.enabled = false;
+        //gameObject.SetActive(false);
     }
     private void OnEnable()
     {
@@ -50,6 +52,9 @@ public class JsonSettingPanelManager : MonoBehaviour
         // 정밀 모드 (Ctrl)
         if (Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl))
             multiplier *= fineMoveMultiplier;
+        //초정밀 모드
+        if (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift))
+            multiplier *= fineMoveMultiplier *0.1f;
 
         Vector3 delta = input.normalized * moveSpeed * multiplier * Time.deltaTime;
 

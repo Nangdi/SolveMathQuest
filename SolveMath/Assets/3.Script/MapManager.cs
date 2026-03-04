@@ -75,6 +75,7 @@ public class MapManager : MonoBehaviour
         SetDic(numMap_1);
         SetDic(numMap_2);
         SetDic(numMap_3);
+        Debug.Log($"맵 dictionary 할당");
         typeToPathDic[GameType.Arrow] = arrowCorrectPath;
         typeToPathDic[GameType.Number] = numCorrectPath;
         typeToPathDic[GameType.ShortestPath] = shortestCorrectPath;
@@ -101,7 +102,7 @@ public class MapManager : MonoBehaviour
             }
         }
 
-        Debug.Log($"Collider Dictionary 등록 완료 ({colliderToIndex.Count}개)");
+        //Debug.Log($"Collider Dictionary 등록 완료 ({colliderToIndex.Count}개)");
     }
     public Transform[] GetCorrectPath(GameType type , Difficulty difficulty)
     {

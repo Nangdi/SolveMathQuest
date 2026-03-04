@@ -71,9 +71,14 @@ public class playerMenu : MonoBehaviour
         lapseTime = 0;
         fillMenu.fillAmount = 0;
     }
-    public void SetStopRotating(bool rotating)
+    public void SetStopRotating(bool touchMenu)
     {
-        stopRotating = rotating;
+        stopRotating = touchMenu;
+        if (!openMenu && !touchMenu)
+        {
+
+            MenuValueReset();
+        }
     }
     public void CloseMenu()
     {

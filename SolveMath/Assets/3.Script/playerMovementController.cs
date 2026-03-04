@@ -12,8 +12,9 @@ public class playerMovementController : MonoBehaviour
     {
 
         Vector3 mp = Input.mousePosition;
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) && !GameManager.instance.Paused)
         {
+
             Vector2 mouseWorld = cam.ScreenToWorldPoint(Input.mousePosition);
                 //Debug.Log($"·ÎÄÃ ÁÂÇ¥ : {mouseWorld}");
             RaycastHit2D hit = Physics2D.Raycast(mouseWorld, Vector2.zero);

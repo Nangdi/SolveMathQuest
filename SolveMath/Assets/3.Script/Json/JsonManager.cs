@@ -8,8 +8,8 @@ public class GameSettingData
 {
     public bool useUnityOnTop;
     public int[] displayIndex = new int[] { 0, 1, 2 };
-    public Vector2 mappingPos = new Vector2(-1.82f, 0.82f);
-    public Vector2 mappingScale = new Vector2(4.35f, 4.35f);
+    public Vector2 mappingPos = new Vector2(-1.8133f, 0.8125f);
+    public Vector2 mappingScale = new Vector2(4.3369f, 4.369f);
     public bool useClickDebug = false;
     public float ResetScreenTime = 120;
     public int multiDetectCount = 3;
@@ -71,7 +71,6 @@ public class JsonManager : MonoBehaviour
     private void Start()
     {
         playerMovementController.gameObject.SetActive(gameSettingData.useClickDebug);
-        Debug.Log($"제이슨 할다엩스트 : {gameSettingData.ResetScreenTime.ToString()}");
         screenReset_T.text = gameSettingData.ResetScreenTime.ToString();
         lidarStopCount_T.text = gameSettingData.multiDetectCount.ToString();
         menuHoldTime_T.text = gameSettingData.menuHoldTime.ToString();
