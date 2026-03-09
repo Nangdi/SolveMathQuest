@@ -200,7 +200,7 @@ public class LocalDBManager : MonoBehaviour
                 {
                     // Dense Rank: 나보다 빠른 '서로 다른' 기록 값 개수 + 1
                     cmd.CommandText = @"
-                    SELECT COUNT(DISTINCT ROUND(time, @digits))
+                    SELECT COUNT(ROUND(time, @digits))
                     FROM records
                     WHERE gameType = @gt
                       AND difficulty = @df

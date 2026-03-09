@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,7 +7,7 @@ public class SceneTimer : MonoBehaviour
 {
     public float lapseTime = 0;
     private float resetTime = 60;
-    private bool _isRunning;
+    private bool _isRunning= false;
     public bool isTrigger;
     public bool isRunning
     {
@@ -23,15 +24,18 @@ public class SceneTimer : MonoBehaviour
     private void Start()
     {
         resetTime = JsonManager.instance.gameSettingData.ResetScreenTime;
+        isRunning = false;
     }
     private void Update()
     {
-        if (!_isRunning || isTrigger) return;
+        if (!isRunning) return;
         lapseTime += Time.deltaTime;
+            Debug.Log($"현재 값 : {isRunning}");
         if(lapseTime >= resetTime)
         {
-            _isRunning = false;
-            isTrigger = true;
+            Debug.Log("들어옴");
+            isRunning = false;
+            Debug.Log($"현재 값 : {isRunning}");
             uIFlowManager.ResetFloorScreen();
            
 

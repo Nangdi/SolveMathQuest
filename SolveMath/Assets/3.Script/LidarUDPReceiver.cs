@@ -60,15 +60,14 @@ public class LidarUDPReceiver : MonoBehaviour
           
 
             lidarDatas = Parseessage(latestMessage);
-            sceneTimer.isRunning = true;
+           
             if (lidarDatas.Length != 0)
             {
                 Debug.Log("받은 데이터: " + latestMessage);
                 //Debug.Log(riderData[2]);
                 //씬타이머 값 초기화 (사람 존재함)
-                sceneTimer.isRunning = false;
-                sceneTimer.isTrigger = false;
-                //sceneTimer.lapseTime = 0;
+                sceneTimer.isRunning = true;
+                sceneTimer.lapseTime = 0;
 
                 //감지되고있는 위치 포인트 오브젝트 업데이트
                 DebugDetectPoint();

@@ -4,7 +4,11 @@ using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
-
+[System.Serializable]
+public class KeyboardRow
+{
+    public Sprite[] keys;
+}
 public class HangulKeyborad : MonoBehaviour
 {
     public PlayerManager playerManager;
@@ -19,9 +23,38 @@ public class HangulKeyborad : MonoBehaviour
     public GameObject goShiftKey;
     public GameObject goSymbolkey;
 
-    private bool isEngOn = true;
+    public KeyboardRow[] keyboradLayouts;
+    public Image keyboardLayoutImage;
+    private bool _isEngOn = false;
+    public bool isEngOn
+    {
+        get { return _isEngOn; }
+        set
+        {
+            if (_isEngOn == value) return;
+
+            _isEngOn = value;
+            int engIndex = isEngOn ? 1 : 0;
+            int shiftIndex = isShift ? 1 : 0;
+            keyboardLayoutImage.sprite = keyboradLayouts[engIndex].keys[shiftIndex];
+        }
+    }
     private bool isSymbolAct = false;
-    private bool isShift = false;
+    public bool IsShift = false;
+    public bool isShift
+    {
+        get { return IsShift; }
+        set
+        {
+            if (IsShift == value) return;
+
+            IsShift = value;
+            int engIndex = isEngOn ? 1 : 0;
+            int shiftIndex = isShift ? 1 : 0;
+            keyboardLayoutImage.sprite = keyboradLayouts[engIndex].keys[shiftIndex];
+
+        }
+    }
     private bool isMan = true; //Gender Info //≥≤≥‡»Æ¿Œ
 
     private int selectTapNum = 0;
@@ -594,7 +627,7 @@ public class HangulKeyborad : MonoBehaviour
             key.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text =
                 key.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text.ToLower();
         }
-        OnKorEngClicked();
+        //OnKorEngClicked();
     }
 
     void Update()
