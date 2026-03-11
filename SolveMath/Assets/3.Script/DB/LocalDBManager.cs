@@ -36,7 +36,10 @@ public class LocalDBManager : MonoBehaviour
 
         dbPath = "URI=file:" + fullPath;
 
-        CreateTable();
+        if (!File.Exists(fullPath))
+        {
+            CreateTable();
+        }
     }
 
     private void CreateTable()

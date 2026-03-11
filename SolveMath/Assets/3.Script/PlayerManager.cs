@@ -48,7 +48,7 @@ public class PlayerManager : MonoBehaviour
         circleMaskManager.SetCirclePosition(lidarPos);
         targetPos = new Vector2(worldX, worldZ);
 
-        Debug.Log($"플레이어 좌표 변환: {lidarPos} → {worldX}, {worldZ}");
+        //Debug.Log($"플레이어 좌표 변환: {lidarPos} → {worldX}, {worldZ}");
     }
 
     private void Update()

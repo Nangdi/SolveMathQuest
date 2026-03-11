@@ -26,12 +26,12 @@ public class UnityAlwaysOnTop : MonoBehaviour
     void Start()
     {
 
-
         if (Application.isEditor)
         {
             Debug.Log("에디터에서는 AlwaysOnTop 설정 생략");
             return;
         }
+        Cursor.visible = false;
         //// 에디터에선 무시
         cam1.targetDisplay = JsonManager.instance.gameSettingData.displayIndex[0];
         canvas1.targetDisplay = JsonManager.instance.gameSettingData.displayIndex[0];
@@ -53,7 +53,7 @@ public class UnityAlwaysOnTop : MonoBehaviour
             return;
         }
 
-        Cursor.visible = false;
+       
         // 빌드 실행 시 최상단 설정
         var windowName = Application.productName;
         IntPtr hWnd = FindWindow(null, windowName);

@@ -28,11 +28,15 @@ public class Rule_ShortestPath : MonoBehaviour, IGameRule
         {
             if (visitLocations.Count == selectGraph.Count - 1 && sumTime == correctTime)
             {
-            return true;
+                return true;
 
             }
-            //GameManager.instance.Fail();
+            else
+            {
+                GameManager.instance.Fail();
+            }
         }
+       
         return false;
     }
 
