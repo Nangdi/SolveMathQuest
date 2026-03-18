@@ -9,7 +9,7 @@ public class GameSettingData
     public bool useUnityOnTop;
     public int[] displayIndex = new int[] { 0, 1, 2 };
     public Vector2 mappingPos = new Vector2(-1.8133f, 0.8125f);
-    public Vector2 mappingScale = new Vector2(4.3369f, 4.369f);
+    public Vector2 mappingScale = new Vector2(4.3369f, 4.3369f);
     public bool useClickDebug = false;
     public float ResetScreenTime = 120;
     public int multiDetectCount = 3;

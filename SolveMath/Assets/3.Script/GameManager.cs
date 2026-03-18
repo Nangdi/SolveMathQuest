@@ -16,6 +16,7 @@ public class GameManager : MonoBehaviour
 
     [SerializeField] private GameSessionManager sessionManager;
     [SerializeField] private MazeSolutionLineAnimator hintAnimator;
+    [SerializeField] private playerMenu playMenu;
 
     [SerializeField] private GameObject rePlayPanel;
     public UIFlowManager uiFlowManager;
@@ -121,6 +122,7 @@ public class GameManager : MonoBehaviour
         player.startPos = Vector2.zero;
         player.MoveStartPoint();
         player.ResetPlayerState();
+        playMenu.CloseMenu();
         gameRule.ResetData(player.FindStartTF().GetComponent<Collider2D>());
         uiFlowManager.spriteSwaper.floorResultImage.gameObject.SetActive(false);
     }

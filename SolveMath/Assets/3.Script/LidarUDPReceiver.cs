@@ -107,6 +107,7 @@ public class LidarUDPReceiver : MonoBehaviour
                     {
                         if (secondData.stateId == 2)
                         {
+                            lidarTouchManager.ClickScreenbylidar(secondData.pos);
                             bool Touchmenu = lidarTouchManager.CheckHit(secondData.pos);
                             playerMenu.SetStopRotating(Touchmenu);
 
@@ -124,10 +125,23 @@ public class LidarUDPReceiver : MonoBehaviour
 
                 }
 
-
+                firstData = null;
+                secondData = null;
             }
                 latestMessage = null; // 한 번만 찍고 초기화
         }
+    }
+    private LidarData FindLidarDataByIndex(int index)
+    {
+        foreach (var lidarData in lidarDatas)
+        {
+            if(lidarData.touchId == index)
+            {
+                return lidarData;
+            }
+            
+        }
+        return null;
     }
     private void ReceiveData()
     {

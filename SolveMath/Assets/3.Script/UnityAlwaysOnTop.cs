@@ -33,13 +33,13 @@ public class UnityAlwaysOnTop : MonoBehaviour
         }
         Cursor.visible = false;
         //// 에디터에선 무시
-        cam1.targetDisplay = JsonManager.instance.gameSettingData.displayIndex[0];
-        canvas1.targetDisplay = JsonManager.instance.gameSettingData.displayIndex[0];
+        //cam1.targetDisplay = JsonManager.instance.gameSettingData.displayIndex[0];
+        //canvas1.targetDisplay = JsonManager.instance.gameSettingData.displayIndex[0];
         if (Display.displays.Length > 1)
         {
             Display.displays[1].Activate();
-            cam2.targetDisplay = JsonManager.instance.gameSettingData.displayIndex[1];
-            canvas2.targetDisplay = JsonManager.instance.gameSettingData.displayIndex[1];
+            //cam2.targetDisplay = JsonManager.instance.gameSettingData.displayIndex[1];
+            //canvas2.targetDisplay = JsonManager.instance.gameSettingData.displayIndex[1];
         }
         if (Display.displays.Length > 2)
         {

@@ -30,7 +30,7 @@ public class SceneTimer : MonoBehaviour
     {
         if (!isRunning) return;
         lapseTime += Time.deltaTime;
-            Debug.Log($"현재 값 : {isRunning}");
+            //Debug.Log($"현재 값 : {isRunning}");
         if(lapseTime >= resetTime)
         {
             Debug.Log("들어옴");
