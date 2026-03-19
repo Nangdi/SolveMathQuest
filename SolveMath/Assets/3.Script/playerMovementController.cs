@@ -35,6 +35,7 @@ public class playerMovementController : MonoBehaviour
                 Vector2 normalizationPos = new Vector2(u, v);
                 //Debug.Log($"정규화 좌표 : {u :F2}, {v:F2}");
                 player.SetPlayerPosition(normalizationPos);
+                Debug.Log($"플레이어 위치 설정 : {normalizationPos}");
             }
         }
     }

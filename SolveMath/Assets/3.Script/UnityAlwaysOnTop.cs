@@ -26,18 +26,28 @@ public class UnityAlwaysOnTop : MonoBehaviour
     void Start()
     {
 
-        if (Application.isEditor)
-        {
-            Debug.Log("에디터에서는 AlwaysOnTop 설정 생략");
-            return;
-        }
-        Cursor.visible = false;
+
         //// 에디터에선 무시
         //cam1.targetDisplay = JsonManager.instance.gameSettingData.displayIndex[0];
         //canvas1.targetDisplay = JsonManager.instance.gameSettingData.displayIndex[0];
+        Debug.Log($"Display count = {Display.displays.Length}");
+
+        //for (int i = 0; i < Display.displays.Length; i++)
+        //{
+        //    Debug.Log(
+        //        $"Display[{i}] " +
+        //        $"system={Display.displays[i].systemWidth}x{Display.displays[i].systemHeight}, " +
+        //        $"rendering={Display.displays[i].renderingWidth}x{Display.displays[i].renderingHeight}"
+        //    );
+        //}
+
+        //Debug.Log($"Screen = {Screen.width} x {Screen.height}");
+
+
         if (Display.displays.Length > 1)
         {
             Display.displays[1].Activate();
+            //Display.displays[1] = cam2;
             //cam2.targetDisplay = JsonManager.instance.gameSettingData.displayIndex[1];
             //canvas2.targetDisplay = JsonManager.instance.gameSettingData.displayIndex[1];
         }
@@ -47,7 +57,12 @@ public class UnityAlwaysOnTop : MonoBehaviour
             cam3.targetDisplay = JsonManager.instance.gameSettingData.displayIndex[2];
             canvas3.targetDisplay = JsonManager.instance.gameSettingData.displayIndex[2];
         }
-
+        if (Application.isEditor)
+        {
+            Debug.Log("에디터에서는 AlwaysOnTop 설정 생략");
+            return;
+        }
+        Cursor.visible = false;
         if (!JsonManager.instance.gameSettingData.useUnityOnTop)
         {
             return;

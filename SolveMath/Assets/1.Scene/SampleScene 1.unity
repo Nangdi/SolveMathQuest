@@ -530,7 +530,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &17815518
 RectTransform:
   m_ObjectHideFlags: 0
@@ -945,7 +945,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &50472925
 Transform:
   m_ObjectHideFlags: 0
@@ -1611,7 +1611,7 @@ MonoBehaviour:
   lidarStopCount_T: {fileID: 1767980792}
   menuHoldTime_T: {fileID: 623855793}
   settingPanel: {fileID: 1637915981}
-  MappingSquare: {fileID: 1973453275}
+  MappingSquare: {fileID: 0}
 --- !u!4 &81125817
 Transform:
   m_ObjectHideFlags: 0
@@ -4111,7 +4111,7 @@ Canvas:
   m_Enabled: 1
   serializedVersion: 3
   m_RenderMode: 2
-  m_Camera: {fileID: 621672547}
+  m_Camera: {fileID: 519420031}
   m_PlaneDistance: 100
   m_PixelPerfect: 0
   m_ReceivesEvents: 1
@@ -11701,7 +11701,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 533489026}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 232619962}
+        m_TargetAssemblyTypeName: playerMenu, Assembly-CSharp
+        m_MethodName: SetStopRotating
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
 --- !u!114 &533489029
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -30264,7 +30276,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mappingSqureRenderer: {fileID: 1816267996}
-  MappingTF: {fileID: 1973453275}
+  MappingTF: {fileID: 0}
   moveSpeed: 0.5
   fineMoveMultiplier: 0.1
   useLocalMove: 0
@@ -33408,7 +33420,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: -9
+  m_SortingOrder: 0
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
   m_Color: {r: 1, g: 0, b: 0, a: 0.8509804}
   m_FlipX: 0
@@ -35431,14 +35443,13 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &1973453275
-Transform:
+--- !u!224 &1973453275
+RectTransform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1973453274}
-  serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 4.35, y: 4.35, z: 1}
@@ -35447,6 +35458,11 @@ Transform:
   - {fileID: 1816267997}
   m_Father: {fileID: 406152745}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1001 &1981707604
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -37551,7 +37567,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ef4124a902a60b40b1b0b572b04d76d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameCam: {fileID: 621672547}
+  gameCam: {fileID: 519420031}
   mapRect: {fileID: 1816267996}
   raycaster: {fileID: 232619959}
   eventSystem: {fileID: 1779947432}

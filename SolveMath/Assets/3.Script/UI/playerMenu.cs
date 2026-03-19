@@ -34,6 +34,7 @@ public class playerMenu : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //Debug.Log(stopRotating);
         if (!GameManager.instance.startGame || GameManager.instance.Paused) return;
         if (stopRotating )
         {
@@ -52,14 +53,14 @@ public class playerMenu : MonoBehaviour
             }
 
         }
-        else
+        else if(!openMenu && !stopRotating)
         {
-            rotationValue += Time.deltaTime * rotationSpeed;
-            if(rotationValue >= 360f)
-            {
-                rotationValue -= 360f;
-            }
-            transform.rotation = Quaternion.Euler(0f, 0f, rotationValue);
+            //rotationValue += Time.deltaTime * rotationSpeed;
+            //if(rotationValue >= 360f)
+            //{
+            //    rotationValue -= 360f;
+            //}
+            //transform.rotation = Quaternion.Euler(0f, 0f, rotationValue);
         }
 
         //회전 메소드
@@ -73,6 +74,7 @@ public class playerMenu : MonoBehaviour
     }
     public void SetStopRotating(bool touchMenu)
     {
+        Debug.Log($"상태바꿈 : {touchMenu}");
         stopRotating = touchMenu;
         if (!openMenu && !touchMenu)
         {

@@ -33,8 +33,8 @@ public class LidarUDPReceiver : MonoBehaviour
     public GameObject multiDetectPanel;
     private int multiDetectCount = 3;
 
-    LidarData firstData = new LidarData();
-    LidarData secondData = new LidarData();
+
+
     void Start()
     {
         udp = new UdpClient(port);
@@ -63,7 +63,7 @@ public class LidarUDPReceiver : MonoBehaviour
            
             if (lidarDatas.Length != 0)
             {
-                Debug.Log("받은 데이터: " + latestMessage);
+                //Debug.Log("받은 데이터: " + latestMessage);
                 //Debug.Log(riderData[2]);
                 //씬타이머 값 초기화 (사람 존재함)
                 sceneTimer.isRunning = true;
@@ -94,39 +94,74 @@ public class LidarUDPReceiver : MonoBehaviour
 
                     }
                 }
-                if (firstData != null && !GameManager.instance.Paused)
+                Vector2 sumPos = new Vector2();
+                int sumCount = 0;
+                foreach (var data in lidarDatas)
                 {
-                    firstData = lidarDatas[0];
-                    playerManager.SetPlayerPosition(firstData.pos);
-
-                }
-                if (lidarDatas.Length > 1)
-                {
-                    secondData = lidarDatas[1];
-                    if (secondData != null)
+                   
+                    switch (data.stateId)
                     {
-                        if (secondData.stateId == 2)
-                        {
-                            lidarTouchManager.ClickScreenbylidar(secondData.pos);
-                            bool Touchmenu = lidarTouchManager.CheckHit(secondData.pos);
-                            playerMenu.SetStopRotating(Touchmenu);
+                        case 1:
+                            lidarTouchManager.ClickScreenbylidar(data.pos);
+                            //if (lidarTouchManager.CheckHit(data.pos)) return;
 
-                        }
-                        if (secondData.stateId == 1)
-                        {
-                            //터치
-                            lidarTouchManager.ClickScreenbylidar(secondData.pos);
+                            Debug.Log($"터치");
+                            break;
+                        case 2:
+                            //lidarTouchManager.ClickScreenbylidar(data.pos);
+                            //bool Touchmenu = lidarTouchManager.CheckHit(data.pos);
+                            //playerMenu.SetStopRotating(Touchmenu);
+                            sumPos += data.pos;
+                            sumCount++;
+                            //Debug.Log($"슬라이드, 위치 누적: {sumPos} , 더한 위치 : {data.pos}");
+                            break;
+                        case 3:
 
-                        }
+                            //lidarTouchManager.ClickScreenbylidar(data.pos);
+
+                            break;
                     }
-
-
-
-
                 }
+                Vector2 midPos = sumPos / sumCount;
+                if (!GameManager.instance.Paused && midPos != Vector2.zero)
+                {
+                    playerManager.SetPlayerPosition(midPos);
+                    Debug.Log($"플레이어 위치 업데이트: {midPos} , 나눈 갯수 {lidarDatas.Length}");
+                }
+                //lidarDatas = null;
+                //firstData = FindLidarDataByIndex(0);
+                //if (firstData != null && !GameManager.instance.Paused)
+                //{
+                //    playerManager.SetPlayerPosition(firstData.pos);
 
-                firstData = null;
-                secondData = null;
+                //}
+                //if (lidarDatas.Length > 1)
+                //{
+                //    secondData = FindLidarDataByIndex(1);
+                //    if (secondData != null)
+                //    {
+                //        if (secondData.stateId == 2)
+                //        {
+                //            lidarTouchManager.ClickScreenbylidar(secondData.pos);
+                //            bool Touchmenu = lidarTouchManager.CheckHit(secondData.pos);
+                //            playerMenu.SetStopRotating(Touchmenu);
+
+                //        }
+                //        if (secondData.stateId == 1)
+                //        {
+                //            //터치
+                //            lidarTouchManager.ClickScreenbylidar(secondData.pos);
+
+                //        }
+                //    }
+
+
+
+
+                //}
+
+                //firstData = null;
+                //secondData = null;
             }
                 latestMessage = null; // 한 번만 찍고 초기화
         }
