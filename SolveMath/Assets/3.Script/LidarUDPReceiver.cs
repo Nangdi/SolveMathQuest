@@ -98,30 +98,36 @@ public class LidarUDPReceiver : MonoBehaviour
                 int sumCount = 0;
                 foreach (var data in lidarDatas)
                 {
-                   
+                    bool Touchmenu;
                     switch (data.stateId)
                     {
                         case 1:
-                            lidarTouchManager.ClickScreenbylidar(data.pos);
+                            //lidarTouchManager.LidarPointerClick(data.pos);
                             //if (lidarTouchManager.CheckHit(data.pos)) return;
-
                             Debug.Log($"터치");
+                            bool isClickMenu = lidarTouchManager.Click_RectTransformUtility(data.pos);
+                            if (isClickMenu) return;
+
                             break;
                         case 2:
-                            //lidarTouchManager.ClickScreenbylidar(data.pos);
-                            //bool Touchmenu = lidarTouchManager.CheckHit(data.pos);
-                            //playerMenu.SetStopRotating(Touchmenu);
+                            //lidarTouchManager.LidarPointerClick(data.pos);
+                            //lidarTouchManager.Click_RectTransformUtility(data.pos);
+                            Touchmenu = lidarTouchManager.IsPointerOverMenu(data.pos);
+                            if (Touchmenu) return;
                             sumPos += data.pos;
                             sumCount++;
+                            //playerMenu.SetStopRotating(Touchmenu);
                             //Debug.Log($"슬라이드, 위치 누적: {sumPos} , 더한 위치 : {data.pos}");
                             break;
                         case 3:
-
+                            Touchmenu = lidarTouchManager.IsPointerOverMenu(data.pos);
+                            if (Touchmenu) playerMenu.SetStopRotating(false);
                             //lidarTouchManager.ClickScreenbylidar(data.pos);
 
                             break;
                     }
                 }
+                if (sumCount == 0) return;
                 Vector2 midPos = sumPos / sumCount;
                 if (!GameManager.instance.Paused && midPos != Vector2.zero)
                 {

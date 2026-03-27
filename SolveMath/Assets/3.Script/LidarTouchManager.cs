@@ -1,10 +1,17 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.PerformanceData;
 using System.Linq.Expressions;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+[Serializable]
+public class ClickUI
+{
+    public Button button;
+    public RectTransform rect;
+}
 
 public class LidarTouchManager : MonoBehaviour
 {
@@ -20,41 +27,59 @@ public class LidarTouchManager : MonoBehaviour
     [Header("디버그용")]
     public playerMenu playerMenu; 
     Vector2 debugScreenPos;
+
+    public RectTransform[] clickTargets;
+    [SerializeField]
+    private List<ClickUI> clickUIs = new List<ClickUI>();
+    public RectTransform menuRect;
     private void Start()
     {
+        //Button[] btnObjects = GameObject.FindObjectsOfType<Button>();
+        //foreach (var target in btnObjects)
+        //{
+        //    ClickUI clickUI = new ClickUI();
+        //    clickUI.rect = target.GetComponent<RectTransform>();
+        //    clickUI.button = target.GetComponent<Button>();
+        //    clickUIs.Add(clickUI);
+        //}
+        foreach (var target in clickTargets)
+        {
+            ClickUI clickUI = new ClickUI();
+            clickUI.rect = target;
+            clickUI.button = target.GetComponent<Button>();
+            clickUIs.Add(clickUI);
+        }
+
     }
     private void Update()
     {
         //디버그용
-        Vector3 rel = Display.RelativeMouseAt(Input.mousePosition);
-        //Debug.Log($"Input.mousePosition = {Input.mousePosition}");
-        if (Input.GetMouseButtonDown(0))
-        {
-            Vector3 screenPos = Input.mousePosition;
-         
-            //// z 값은 카메라와의 거리
-            //screenPos.z = Mathf.Abs(uiCam.transform.position.z);
-            //bool Touchmenu = CheckHitMouseDebug(screenPos);
-            //if (Touchmenu )
-            //{
-            //    playerMenu.SetStopRotating(true);
-            //}
-            //else
-            //{
-            //    playerMenu.SetStopRotating(false);
-            //}
 
-            //Debug.Log("Clicked World Pos (2D): " + screenPos);
-            CheckHitMouseDebug(screenPos);
-        }
+        //Vector3 screenPos = Input.mousePosition;
+        //Click_RectTransformUtility(screenPos);
     }
-    public RectTransform menuRect;
 
-    bool IsPointerOverMenu(Vector2 screenPos)
+    public bool IsPointerOverMenu(Vector2 Map01)
     {
+        Vector2 screenPos = Map01ToScreenPos(Map01);
         bool inside = RectTransformUtility.RectangleContainsScreenPoint(menuRect, screenPos, gameCam);
         Debug.Log($"Menu 안에 들어왔는가: {inside}");
         return inside;
+    }
+    public bool Click_RectTransformUtility(Vector2 Map01)
+    {
+        Vector2 screenPos = Map01ToScreenPos(Map01);
+        foreach (var clickUI in clickUIs)
+        {
+
+            if (RectTransformUtility.RectangleContainsScreenPoint(clickUI.rect, screenPos, gameCam) && clickUI.rect.gameObject.activeInHierarchy)
+            {
+                clickUI.button.onClick.Invoke();
+                Debug.Log($"클릭된 UI : {clickUI.button.name}");
+                return true;
+            }
+        }
+            return false;
     }
     public Vector3 Map01ToScreenPos(Vector2 map01)
     {
@@ -82,13 +107,14 @@ public class LidarTouchManager : MonoBehaviour
         float wx = Mathf.Lerp(b.min.x, b.max.x, map01.x);
         float wy = Mathf.Lerp(b.min.y, b.max.y, map01.y);
         Vector3 world = new Vector3(wx, wy, mapRect.transform.position.z);
+        //Debug.Log($"맵 좌표 {map01} → 월드 좌표 {world}");
         return world;
     }
     void OnDrawGizmos()
     {
         if (gameCam == null) return;
 
-        // Screen → World 변환 (깊이 중요)
+        // Screen → World 변환 
         Vector3 world = gameCam.ScreenToWorldPoint(
             new Vector3(debugVector2.x, debugVector2.y,
             Mathf.Abs(gameCam.transform.position.z))
@@ -98,101 +124,6 @@ public class LidarTouchManager : MonoBehaviour
         Gizmos.DrawSphere(world, 0.2f);
 
     }
-    public bool CheckHit(Vector2 map01)
-    {
-
-        Vector3 screenPos = Map01ToScreenPos(map01);
-
-        // 3️⃣ PointerEventData 생성
-        PointerEventData ped = new PointerEventData(eventSystem);
-        ped.position = screenPos;
-        Debug.Log($"isPointerOverMenu : {IsPointerOverMenu(screenPos)}");
-        return IsPointerOverMenu(screenPos);
-       
-            // 4️⃣ Raycast
-            List<RaycastResult> results = new List<RaycastResult>();
-        raycaster.Raycast(ped, results);
-
-        if (results.Count == 0)
-            return false;
-
-        // 5️⃣ 특정 UI인지 확인
-        foreach (var r in results)
-        {
-            //if (r.gameObject.transform.IsChildOf(targetUiRoot))
-            //{
-            //    Debug.Log("✔ 플레이어 UI 위에 있음");
-            //    return true;
-            //}
-            
-        }
-
-        return false;
-    }
-    public void CheckHitMouseDebug(Vector2 screenPos)
-    {
-        // 3️⃣ PointerEventData 생성
-        PointerEventData pointerData = new PointerEventData(eventSystem);
-        pointerData.position = screenPos;
-        debugVector2 = pointerData.position;
-
-        List<RaycastResult> results = new List<RaycastResult>();
-
-        playerRaycaster.Raycast(pointerData, results);
-        uiRaycaster.Raycast(pointerData, results);
-        if (results.Count > 0)
-        {
-            foreach (var r in results)
-            {
-                Debug.Log($"레이캐스트된 오브젝트 : {r.gameObject.name}");
-            }
-            GameObject target = results[0].gameObject;
-
-            //ExecuteEvents.Execute(target, pointerData, ExecuteEvents.pointerDownHandler);
-            //ExecuteEvents.Execute(target, pointerData, ExecuteEvents.pointerUpHandler);
-            ExecuteEvents.Execute(target, pointerData, ExecuteEvents.pointerClickHandler);
-            Debug.Log($"클릭된 오브젝트 : {target.name}");
-            if (target.name == "Menu")
-            {
-
-            }
-        }
-    }
-    public void ClickScreenbylidar(Vector2 map01)
-    {
-
-        Vector3 screenPos = Map01ToScreenPos(map01);
-        //Vector2 screenPos = Map01ToWorldPos(map01);
-        PointerEventData pointerData = new PointerEventData(eventSystem);
-
-        //pointerData.displayIndex = 1;
-        pointerData.position = screenPos;
-        debugVector2 = pointerData.position;
-        //Debug.Log($"레이캐스트 시작 좌표 : {pointerData.position}");
-        List<RaycastResult> results = new List<RaycastResult>();
-
-        //Vector2 menuPos = uiCam.WorldToScreenPoint(playerMenu.transform.position);
-        //IsPointerOverMenu(screenPos);
-        //EventSystem.current.RaycastAll(pointerData, results);
-        playerRaycaster.Raycast(pointerData, results);
-        //uiRaycaster.Raycast(pointerData, results);
-        Debug.Log($"레이캐스트된 오브젝트 수 : {results.Count}");
-        if (results.Count > 0)
-        {
-            foreach (var r in results)
-            {
-                Debug.Log($"레이캐스트된 오브젝트 : {r.gameObject.name}");
-                ExecuteEvents.Execute(r.gameObject, pointerData, ExecuteEvents.pointerClickHandler);
-                if (r.gameObject.CompareTag("Menu"))
-                {
-                    Debug.Log("Menu 클릭됨");
-                    playerMenu.SetStopRotating(true);
-                    return;
-                }
-            }
-        
-        }
-        playerMenu.SetStopRotating(false);
-    }
+  
    
 }

@@ -40,14 +40,14 @@ public class GameManager : MonoBehaviour
             {
                 sessionManager.LoseLife(_life);
             }
-            if (_life < 1)
-            {
-                uiFlowManager.hintYesBtn.interactable = false;
-            }
-            else
-            {
-                uiFlowManager.hintYesBtn.interactable = true;
-            }
+            //if (_life < 1)
+            //{
+            //    uiFlowManager.hintYesBtn.interactable = false;
+            //}
+            //else
+            //{
+            //    uiFlowManager.hintYesBtn.interactable = true;
+            //}
         }
     }
     public float time = 300;
@@ -79,7 +79,7 @@ public class GameManager : MonoBehaviour
     private void Update()
     {
         if (!startGame) return;
-        if (Paused) return;
+        //if (Paused) return;
         elapsedTime += Time.deltaTime;
         sessionManager.UpdateTimeText(time - elapsedTime);
         //ui타이머 업데이트
@@ -209,9 +209,24 @@ public class GameManager : MonoBehaviour
             hintSpeed = 1f;
         }
         hintAnimator.Play(hintSpeed);
+        playMenu.gameStateTextController.SetGameStateText(GameState.Hint);
     }
-    public void WorkAfterHint()
+    public void GiveUp()
     {
-        rePlayPanel.SetActive(true);
+        hintAnimator.Play(0.5f,true);
+        playMenu.gameStateTextController.SetGameStateText(GameState.Correct);
+    }
+    public void OnEndHint(bool isGiveUp)
+    {
+        if (!isGiveUp)
+        {
+            rePlayPanel.SetActive(true);
+
+        }
+        else
+        {
+            ResultGame(false);
+        }
+        playMenu.gameStateTextController.SetActiveText(false);
     }
 }

@@ -71,7 +71,7 @@ public class MazeSolutionLineAnimator : MonoBehaviour
     }
 
     /// <summary>정답 라인을 서서히 그리기 시작</summary>
-    public void Play(float speed)
+    public void Play(float speed , bool isGiveUp=false)
     {
         Transform[] correctPath = MapManager.instance.GetCorrectPath(GameManager.instance.gameType , GameManager.instance.difficultyMode);
         CorectLineSetting(correctPath);
@@ -79,10 +79,10 @@ public class MazeSolutionLineAnimator : MonoBehaviour
         if (path == null || path.Count < 2) return;
 
         if (co != null) StopCoroutine(co);
-        co = StartCoroutine(AnimateDraw(path, speed * path.Count));
+        co = StartCoroutine(AnimateDraw(path, speed * path.Count, isGiveUp));
     }
 
-    IEnumerator AnimateDraw(IReadOnlyList<Vector3> path, float drawDuration)
+    IEnumerator AnimateDraw(IReadOnlyList<Vector3> path, float drawDuration, bool isGiveUp)
     {
         var sampled = BuildSampledPoints(path, samplesPerUnit);
         int total = sampled.Count;
@@ -134,7 +134,7 @@ public class MazeSolutionLineAnimator : MonoBehaviour
 
         line.positionCount = 0;
         co = null;
-        GameManager.instance.WorkAfterHint();
+        GameManager.instance.OnEndHint(isGiveUp);
     }
 
     /// <summary>

@@ -6,6 +6,8 @@ using UnityEngine.UI;
 
 public class playerMenu : MonoBehaviour
 {
+    public GameStateTextController gameStateTextController;
+
     private bool stopRotating;
     public bool openMenu  { get; private set; }
     private float targetTime = 3;
@@ -22,10 +24,12 @@ public class playerMenu : MonoBehaviour
     private GameObject menu;
     [SerializeField]
     private Image fillMenu;
-
+    [SerializeField] 
+    private GameObject HintOptionOB;
 
     void Start()
     {
+        
         openMenu = false;
         CloseMenu();
         targetTime = JsonManager.instance.gameSettingData.menuHoldTime;
@@ -42,25 +46,18 @@ public class playerMenu : MonoBehaviour
             fillMenu.fillAmount = Mathf.Clamp01(lapseTime/ targetTime);
             if (lapseTime > targetTime && !openMenu)
             {
-                openMenu = true;
-                //메뉴 열림 메소드
-                menuOptions[0].SetActive(true);
-                menu.SetActive(false);
-                //검은화면 On
-                blackBorad.SetActive(true);
-                //게임 퍼즈
-                GameManager.instance.Paused = true;
+                OpenMenu();
             }
 
         }
         else if(!openMenu && !stopRotating)
         {
-            //rotationValue += Time.deltaTime * rotationSpeed;
-            //if(rotationValue >= 360f)
-            //{
-            //    rotationValue -= 360f;
-            //}
-            //transform.rotation = Quaternion.Euler(0f, 0f, rotationValue);
+            rotationValue += Time.deltaTime * rotationSpeed;
+            if (rotationValue >= 360f)
+            {
+                rotationValue -= 360f;
+            }
+            transform.rotation = Quaternion.Euler(0f, 0f, rotationValue);
         }
 
         //회전 메소드
@@ -71,6 +68,7 @@ public class playerMenu : MonoBehaviour
         openMenu = false;
         lapseTime = 0;
         fillMenu.fillAmount = 0;
+        HintOptionOB.SetActive(true);
     }
     public void SetStopRotating(bool touchMenu)
     {
@@ -93,5 +91,22 @@ public class playerMenu : MonoBehaviour
         }
         menu.SetActive(true);
         blackBorad.SetActive(false);
+    }
+    public void OpenMenu()
+    {
+        openMenu = true;
+        //메뉴 열림 메소드
+        menuOptions[0].SetActive(true);
+        if (GameManager.instance.life < 1)
+        {
+            HintOptionOB.SetActive(false);
+        }
+        menu.SetActive(false);
+        //검은화면 On
+        blackBorad.SetActive(true);
+        gameStateTextController.SetActiveText(true);
+        gameStateTextController.SetGameStateText(GameState.Menu);
+        //게임 퍼즈
+        GameManager.instance.Paused = true;
     }
 }
