@@ -47,6 +47,7 @@ public class GameStateTextController : MonoBehaviour
                 gameStateText.text = HintString;
                 break;
             default:
+                gameStateText.gameObject.SetActive(false);
                 break;
         }
     }

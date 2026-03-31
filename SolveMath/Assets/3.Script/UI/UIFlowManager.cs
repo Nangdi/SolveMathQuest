@@ -130,6 +130,7 @@ public class UIFlowManager : MonoBehaviour
         FloorScreens[1].SetActive(true);
         JumpScene(0);
         AllDeactiveMap();
+        GameManager.instance.ResetGame();
     }
     public GameObject GetCurrentMap()
     {

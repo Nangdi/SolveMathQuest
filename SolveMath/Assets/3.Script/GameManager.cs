@@ -123,8 +123,10 @@ public class GameManager : MonoBehaviour
         player.MoveStartPoint();
         player.ResetPlayerState();
         playMenu.CloseMenu();
+        playMenu.gameStateTextController.SetGameStateText(GameState.None);
         gameRule.ResetData(player.FindStartTF().GetComponent<Collider2D>());
         uiFlowManager.spriteSwaper.floorResultImage.gameObject.SetActive(false);
+        //메뉴글씨 초기화
     }
     public void ReStart()
     {

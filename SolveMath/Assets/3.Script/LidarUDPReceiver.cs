@@ -102,21 +102,16 @@ public class LidarUDPReceiver : MonoBehaviour
                     switch (data.stateId)
                     {
                         case 1:
-                            //lidarTouchManager.LidarPointerClick(data.pos);
-                            //if (lidarTouchManager.CheckHit(data.pos)) return;
                             Debug.Log($"터치");
                             bool isClickMenu = lidarTouchManager.Click_RectTransformUtility(data.pos);
                             if (isClickMenu) return;
 
                             break;
                         case 2:
-                            //lidarTouchManager.LidarPointerClick(data.pos);
-                            //lidarTouchManager.Click_RectTransformUtility(data.pos);
                             Touchmenu = lidarTouchManager.IsPointerOverMenu(data.pos);
                             if (Touchmenu) return;
                             sumPos += data.pos;
                             sumCount++;
-                            //playerMenu.SetStopRotating(Touchmenu);
                             //Debug.Log($"슬라이드, 위치 누적: {sumPos} , 더한 위치 : {data.pos}");
                             break;
                         case 3:
@@ -127,47 +122,14 @@ public class LidarUDPReceiver : MonoBehaviour
                             break;
                     }
                 }
-                if (sumCount == 0) return;
+                if (sumCount == 0 && sumCount >2) return;
                 Vector2 midPos = sumPos / sumCount;
                 if (!GameManager.instance.Paused && midPos != Vector2.zero)
                 {
                     playerManager.SetPlayerPosition(midPos);
                     Debug.Log($"플레이어 위치 업데이트: {midPos} , 나눈 갯수 {lidarDatas.Length}");
                 }
-                //lidarDatas = null;
-                //firstData = FindLidarDataByIndex(0);
-                //if (firstData != null && !GameManager.instance.Paused)
-                //{
-                //    playerManager.SetPlayerPosition(firstData.pos);
-
-                //}
-                //if (lidarDatas.Length > 1)
-                //{
-                //    secondData = FindLidarDataByIndex(1);
-                //    if (secondData != null)
-                //    {
-                //        if (secondData.stateId == 2)
-                //        {
-                //            lidarTouchManager.ClickScreenbylidar(secondData.pos);
-                //            bool Touchmenu = lidarTouchManager.CheckHit(secondData.pos);
-                //            playerMenu.SetStopRotating(Touchmenu);
-
-                //        }
-                //        if (secondData.stateId == 1)
-                //        {
-                //            //터치
-                //            lidarTouchManager.ClickScreenbylidar(secondData.pos);
-
-                //        }
-                //    }
-
-
-
-
-                //}
-
-                //firstData = null;
-                //secondData = null;
+              
             }
                 latestMessage = null; // 한 번만 찍고 초기화
         }
