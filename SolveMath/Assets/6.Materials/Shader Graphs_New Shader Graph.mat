@@ -46,5 +46,5 @@ Material:
     - _BUILTIN_QueueOffset: 0
     - _radius: 0.09
     m_Colors:
-    - _Pos: {r: 0.7281025, g: 0.10425488, b: 0, a: 0}
+    - _Pos: {r: 0.1741741, g: 0.1704834, b: 0, a: 0}
   m_BuildTextureStacks: []

@@ -216,6 +216,7 @@ public class GameManager : MonoBehaviour
     public void GiveUp()
     {
         hintAnimator.Play(0.5f,true);
+        startGame = false;
         playMenu.gameStateTextController.SetGameStateText(GameState.Correct);
     }
     public void OnEndHint(bool isGiveUp)
