@@ -187,6 +187,7 @@ public class GameManager : MonoBehaviour
         startGame = false;
         uiFlowManager.ChangeScene();
         uiFlowManager.UpdateResultPanel(isClear);
+        playMenu.gameStateTextController.SetActiveText(false);
     }
     //게임스타트 (출발위치에 이동후 3초지나서 시작) , 출발위치에 안올라올시 1분뒤 대기화면으로
     //게임시간 진행
@@ -218,6 +219,13 @@ public class GameManager : MonoBehaviour
         hintAnimator.Play(0.5f,true);
         startGame = false;
         playMenu.gameStateTextController.SetGameStateText(GameState.Correct);
+    }
+    public void ForcedGameStop()
+    {
+        startGame = false;
+        uiFlowManager.AllDeactiveMap();
+        playMenu.gameStateTextController.SetActiveText(false);
+        hintAnimator.Stop();
     }
     public void OnEndHint(bool isGiveUp)
     {

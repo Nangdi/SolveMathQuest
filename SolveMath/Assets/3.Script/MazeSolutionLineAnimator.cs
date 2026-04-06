@@ -81,6 +81,15 @@ public class MazeSolutionLineAnimator : MonoBehaviour
         if (co != null) StopCoroutine(co);
         co = StartCoroutine(AnimateDraw(path, speed * path.Count, isGiveUp));
     }
+    public void Stop()
+    {
+        if (co != null)
+        {
+            StopCoroutine(co);
+            co = null;
+        }
+        line.positionCount = 0;
+    }
 
     IEnumerator AnimateDraw(IReadOnlyList<Vector3> path, float drawDuration, bool isGiveUp)
     {

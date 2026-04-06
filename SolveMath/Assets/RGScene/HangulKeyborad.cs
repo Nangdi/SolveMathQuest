@@ -34,8 +34,9 @@ public class HangulKeyborad : MonoBehaviour
             if (_isEngOn == value) return;
 
             _isEngOn = value;
-            int engIndex = isEngOn ? 1 : 0;
-            int shiftIndex = isShift ? 1 : 0;
+            int engIndex = _isEngOn ? 1 : 0;
+            int shiftIndex = IsShift ? 1 : 0;
+            Debug.Log($"isEngOn: {_isEngOn}, IsShift: {IsShift}, engIndex: {engIndex}, shiftIndex: {shiftIndex}");
             keyboardLayoutImage.sprite = keyboradLayouts[engIndex].keys[shiftIndex];
         }
     }
@@ -49,8 +50,8 @@ public class HangulKeyborad : MonoBehaviour
             if (IsShift == value) return;
 
             IsShift = value;
-            int engIndex = isEngOn ? 1 : 0;
-            int shiftIndex = isShift ? 1 : 0;
+            int engIndex = _isEngOn ? 1 : 0;
+            int shiftIndex = IsShift ? 1 : 0;
             keyboardLayoutImage.sprite = keyboradLayouts[engIndex].keys[shiftIndex];
 
         }
@@ -536,8 +537,8 @@ public class HangulKeyborad : MonoBehaviour
         if (isSymbolAct)
             OnSymbolClicked();
 
-        isEngOn = !isEngOn;
-
+        //isEngOn = !isEngOn;
+        Debug.Log($"isEngon :  {isEngOn}");
         if (isEngOn)
         {
             if (isShift)
@@ -627,8 +628,11 @@ public class HangulKeyborad : MonoBehaviour
             key.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text =
                 key.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text.ToLower();
         }
-        //OnKorEngClicked();
+        //isEngOn = false;
+        //isShift = false;
+        OnKorEngClicked();
     }
+   
 
     void Update()
     {

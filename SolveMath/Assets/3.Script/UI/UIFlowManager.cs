@@ -110,7 +110,7 @@ public class UIFlowManager : MonoBehaviour
         AllDeactiveMap();
         gameMaps[modeIndex].maps[difficultyIndex].SetActive(true);
     }
-    private void AllDeactiveMap()
+    public void AllDeactiveMap()
     {
         for (int i = 0; i < gameMaps.Length; i++)
         {
