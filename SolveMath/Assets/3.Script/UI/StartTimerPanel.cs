@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class StartTimerPanel : MonoBehaviour
 {
+    
     public TMP_Text timerText;
     private float exposedTime =0;
     int targetTime= 5;
@@ -26,7 +27,9 @@ public class StartTimerPanel : MonoBehaviour
             }
             else if (GameManager.instance.Paused)
             {
+
                 GameManager.instance.Paused = false;
+                GameManager.instance.playMenu.SetStopRotating(false);
             }
                 gameObject.SetActive(false);
         }

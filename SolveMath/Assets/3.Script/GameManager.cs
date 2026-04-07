@@ -16,7 +16,7 @@ public class GameManager : MonoBehaviour
 
     [SerializeField] private GameSessionManager sessionManager;
     [SerializeField] private MazeSolutionLineAnimator hintAnimator;
-    [SerializeField] private playerMenu playMenu;
+    [SerializeField] public playerMenu playMenu;
 
     [SerializeField] private GameObject rePlayPanel;
     public UIFlowManager uiFlowManager;

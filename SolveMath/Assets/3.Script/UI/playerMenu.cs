@@ -26,6 +26,7 @@ public class playerMenu : MonoBehaviour
     private Image fillMenu;
     [SerializeField] 
     private GameObject HintOptionOB;
+    public GameObject optionRoot;
 
     void Start()
     {
