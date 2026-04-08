@@ -33,6 +33,9 @@ public class LidarUDPReceiver : MonoBehaviour
     public GameObject multiDetectPanel;
     private int multiDetectCount = 3;
 
+    private Vector2 currentPos;
+    public float deadLine = 0.01f;
+
 
 
     void Start()
@@ -48,6 +51,7 @@ public class LidarUDPReceiver : MonoBehaviour
             debugPoints[i].enabled = false;
         }
         multiDetectCount = JsonManager.instance.gameSettingData.multiDetectCount;
+        deadLine = JsonManager.instance.gameSettingData.deadLine;
     }
 
 
@@ -105,6 +109,7 @@ public class LidarUDPReceiver : MonoBehaviour
                             Debug.Log($"터치");
                             bool isClickMenu = lidarTouchManager.Click_RectTransformUtility(data.pos);
                             if (isClickMenu) return;
+                            playerMenu.SetStopRotating(isClickMenu);
 
                             break;
                         case 2:
@@ -122,11 +127,13 @@ public class LidarUDPReceiver : MonoBehaviour
                             break;
                     }
                 }
-                if (sumCount == 0 && sumCount >2) return;
+                if (sumCount == 0 && sumCount >3) return;
                 Vector2 midPos = sumPos / sumCount;
                 if (!GameManager.instance.Paused && midPos != Vector2.zero)
                 {
+                    if (Vector2.Distance(currentPos, midPos)  < deadLine) return;
                     playerManager.SetPlayerPosition(midPos);
+                    currentPos = midPos;
                     Debug.Log($"플레이어 위치 업데이트: {midPos} , 나눈 갯수 {lidarDatas.Length}");
                 }
               

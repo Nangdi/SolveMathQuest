@@ -31,43 +31,43 @@ public class Rule_Arrow : MonoBehaviour, IGameRule
     {
     }
 
-    private void OnTriggerEnter2D(Collider2D col)
-    {
-        // 타일이 가진 Grid 좌표 가져오기
-        ArrowDir arrow = mazeGrid[currentGridPos.y, currentGridPos.x];  // y,x 순서 주의
+    //private void OnTriggerEnter2D(Collider2D col)
+    //{
+    //    // 타일이 가진 Grid 좌표 가져오기
+    //    ArrowDir arrow = mazeGrid[currentGridPos.y, currentGridPos.x];  // y,x 순서 주의
 
-        Vector2Int tileDir = ArrowDirToVector(arrow);
+    //    Vector2Int tileDir = ArrowDirToVector(arrow);
 
-        Debug.Log($"▶ Enter Tile ({currentGridPos.x},{currentGridPos.y}) / TileDir: {tileDir}");
+    //    Debug.Log($"▶ Enter Tile ({currentGridPos.x},{currentGridPos.y}) / TileDir: {tileDir}");
 
-        // 1️⃣ 현재 방향과 타일 방향 비교
-        bool sameAsMoveDir = tileDir == targetDir;
-        bool sameAsNextDir = tileDir == optionDir;
+    //    // 1️⃣ 현재 방향과 타일 방향 비교
+    //    bool sameAsMoveDir = tileDir == targetDir;
+    //    bool sameAsNextDir = tileDir == optionDir;
 
-        // 2️⃣ 규칙 처리
-        if (sameAsMoveDir)
-        {
-            // 지금 진행방향과 같으면 → 바꿀 수 있는 방향 갱신
-            optionDir = tileDir;
-            Debug.Log("현재 진행방향과 동일 → nextDir 갱신");
-        }
-        else if (sameAsNextDir)
-        {
-            // nextDir과 같으면 → 이동방향 갱신
-            targetDir = optionDir;
-            optionDir = tileDir; // 다음 방향 미리 준비
-            Debug.Log("nextDir 방향으로 회전 → moveDir 업데이트");
-        }
-        else
-        {
-            // 새로운 방향 등장 → 다음 변경 후보로 설정
-            optionDir = tileDir;
-            Debug.Log("새로운 방향 발견 → nextDir 후보로 설정");
-        }
+    //    // 2️⃣ 규칙 처리
+    //    if (sameAsMoveDir)
+    //    {
+    //        // 지금 진행방향과 같으면 → 바꿀 수 있는 방향 갱신
+    //        optionDir = tileDir;
+    //        Debug.Log("현재 진행방향과 동일 → nextDir 갱신");
+    //    }
+    //    else if (sameAsNextDir)
+    //    {
+    //        // nextDir과 같으면 → 이동방향 갱신
+    //        targetDir = optionDir;
+    //        optionDir = tileDir; // 다음 방향 미리 준비
+    //        Debug.Log("nextDir 방향으로 회전 → moveDir 업데이트");
+    //    }
+    //    else
+    //    {
+    //        // 새로운 방향 등장 → 다음 변경 후보로 설정
+    //        optionDir = tileDir;
+    //        Debug.Log("새로운 방향 발견 → nextDir 후보로 설정");
+    //    }
 
-        // 디버그 출력
-        Debug.Log($"현재 moveDir={targetDir}, nextDir={optionDir}");
-    }
+    //    // 디버그 출력
+    //    Debug.Log($"현재 moveDir={targetDir}, nextDir={optionDir}");
+    //}
 
     private Vector2Int ArrowDirToVector(ArrowDir dir)
     {
@@ -86,11 +86,18 @@ public class Rule_Arrow : MonoBehaviour, IGameRule
     }
     public bool isRuleViolated(Collider2D col)
     {
+
         //밟았던길 저장
         previousGridPos = currentGridPos;
-        //if (previousGridPos == currentGridPos) return false;
+        Vector2Int stepPos = MapManager.instance.colliderToIndex[col];
+        if (stepPos == currentGridPos)
+        {
+            Debug.Log("같은곳밟음");
+            return false;
+        }
         //밟은위치 좌표구하기/업데이트
-        currentGridPos = MapManager.instance.colliderToIndex[col];
+        currentGridPos = stepPos;
+
         //밟은위치 화살표 확인
         ArrowDir currentDir = mazeGrid[currentGridPos.y, currentGridPos.x];
         //화살표의 vector값

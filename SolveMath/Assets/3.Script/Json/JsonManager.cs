@@ -14,6 +14,7 @@ public class GameSettingData
     public float ResetScreenTime = 120;
     public int multiDetectCount = 3;
     public float menuHoldTime = 3;
+    public float deadLine = 0.01f;
 
 }
 public class GameDynamicData
@@ -36,13 +37,17 @@ public class JsonManager : MonoBehaviour
     private string gameDynamicDataPath;
     private string portPath;
 
+
     [Header("Custom")]
     [SerializeField]
     private playerMovementController playerMovementController;
+    [SerializeField]
+    private LidarUDPReceiver lidarUDPReceiver;
 
     public TMP_InputField screenReset_T;
     public TMP_InputField lidarStopCount_T;
     public TMP_InputField menuHoldTime_T;
+    public TMP_InputField deadLine_T;
 
     [SerializeField]
     private GameObject settingPanel;
@@ -74,6 +79,7 @@ public class JsonManager : MonoBehaviour
         screenReset_T.text = gameSettingData.ResetScreenTime.ToString();
         lidarStopCount_T.text = gameSettingData.multiDetectCount.ToString();
         menuHoldTime_T.text = gameSettingData.menuHoldTime.ToString();
+        deadLine_T.text = gameSettingData.deadLine .ToString();
         MappingSquare.transform.position = gameSettingData.mappingPos;
         MappingSquare.transform.localScale = gameSettingData.mappingScale;
     }
@@ -117,9 +123,10 @@ public class JsonManager : MonoBehaviour
        gameSettingData.ResetScreenTime = float.Parse(screenReset_T.text);
        gameSettingData.multiDetectCount = int.Parse(lidarStopCount_T.text);
        gameSettingData.menuHoldTime = float.Parse(menuHoldTime_T.text);
+       gameSettingData.deadLine = float.Parse(deadLine_T.text);
         gameSettingData.mappingPos = MappingSquare.position;
        gameSettingData.mappingScale = MappingSquare.localScale;
-
+        lidarUDPReceiver.deadLine = gameSettingData.deadLine;
         SaveData(gameSettingData , gameDataPath);
     }
 }

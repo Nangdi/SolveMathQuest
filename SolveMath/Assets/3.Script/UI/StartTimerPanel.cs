@@ -8,7 +8,7 @@ public class StartTimerPanel : MonoBehaviour
     
     public TMP_Text timerText;
     private float exposedTime =0;
-    int targetTime= 5;
+    int targetTime= 7;
 
     private void OnEnable()
     {

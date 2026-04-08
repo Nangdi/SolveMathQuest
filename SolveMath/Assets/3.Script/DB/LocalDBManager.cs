@@ -169,7 +169,9 @@ public class LocalDBManager : MonoBehaviour
             if (i < top.Count)
             {
                 var e = top[i];
-                record.SetRecord(e.Rank, e.Name, e.Time.ToString("F2"));
+
+                string result = ConvertToTime(e.Time);
+                record.SetRecord(e.Rank, e.Name, result);
             }
             else
             {
@@ -177,6 +179,15 @@ public class LocalDBManager : MonoBehaviour
             }
         }
         recordRoot.GetComponent<RectTransform>().anchoredPosition = Vector3.zero;
+    }
+    public string ConvertToTime(float time)
+    {
+        int minutes = Mathf.FloorToInt(time / 60f);
+        int seconds = Mathf.FloorToInt(time % 60f);
+        int deci = Mathf.FloorToInt((time - Mathf.Floor(time)) * 100f);
+        Debug.Log($"타임 : {time}");
+        Debug.Log($"{minutes:00}:{seconds:00}:{deci}");
+        return $"{minutes:00}:{seconds:00}:{deci}";
     }
 
     // ------------------------------

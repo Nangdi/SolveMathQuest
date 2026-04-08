@@ -32,7 +32,8 @@ public class ResultDBController : MonoBehaviour
             if (db.TryGetRankByClearTime(playerManager.clearTime, (int)GameManager.instance.gameType, (int)GameManager.instance.difficultyMode, out int r))
             {
                 Debug.Log($"내 순위={r}, 내 기록={playerManager.clearTime:F2}");
-                myRecord.SetRecord(r, playerManager.playerName, $"{playerManager.clearTime:F2}");
+                string recordstring =db.ConvertToTime(playerManager.clearTime);
+                myRecord.SetRecord(r, playerManager.playerName, recordstring);
             }
         }
 
