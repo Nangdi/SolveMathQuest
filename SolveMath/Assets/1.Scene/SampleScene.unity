@@ -19775,6 +19775,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 956849786}
+  - component: {fileID: 956849787}
   m_Layer: 0
   m_Name: "\uC88C\uD68C\uC804\uAE08\uC9C0\uB9F5"
   m_TagString: Untagged
@@ -19800,6 +19801,18 @@ Transform:
   - {fileID: 468216336}
   m_Father: {fileID: 676953844}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &956849787
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 956849785}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc8a99ddb7f8d34419d0a0d2fb22eea3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &964662392
 GameObject:
   m_ObjectHideFlags: 0
@@ -24896,7 +24909,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\uC7AC\uC2DC\uC791"
+  m_text: "\uBA54\uB274"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 6ca00098527eda94f8182ad90a6bb5a9, type: 2}
   m_sharedMaterial: {fileID: 5558053130089317163, guid: 6ca00098527eda94f8182ad90a6bb5a9, type: 2}
@@ -34638,7 +34651,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1796985564
 RectTransform:
   m_ObjectHideFlags: 0
@@ -34703,17 +34716,17 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1890837639}
-        m_TargetAssemblyTypeName: MazeSolutionLineAnimator, Assembly-CSharp
-        m_MethodName: Play
-        m_Mode: 1
+      - m_Target: {fileID: 232619962}
+        m_TargetAssemblyTypeName: playerMenu, Assembly-CSharp
+        m_MethodName: SetStopRotating
+        m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 2
           m_FloatArgument: 0
           m_StringArgument: 
-          m_BoolArgument: 0
+          m_BoolArgument: 1
         m_CallState: 2
 --- !u!114 &1796985566
 MonoBehaviour:
@@ -40272,11 +40285,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2791968762810012798, guid: 8522ed88d57451f4f8020dfa1b270839, type: 3}
       propertyPath: m_Size.x
-      value: 0.3
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 2791968762810012798, guid: 8522ed88d57451f4f8020dfa1b270839, type: 3}
       propertyPath: m_Size.y
-      value: 0.3
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 2791968762810012798, guid: 8522ed88d57451f4f8020dfa1b270839, type: 3}
       propertyPath: m_Offset.x
@@ -41908,7 +41921,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 0bcb69dda7535e2439c49c0ca3b24bea, type: 2}
   - {fileID: 11400000, guid: dcfe367945e04fc4ab624120ca202c48, type: 2}
   currentData: {fileID: 0}
-  startGame: 0
+  startGame: 1
   Paused: 1
   time: 300
   hintCount: 0

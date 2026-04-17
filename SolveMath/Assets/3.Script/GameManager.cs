@@ -124,7 +124,10 @@ public class GameManager : MonoBehaviour
         player.ResetPlayerState();
         playMenu.CloseMenu();
         playMenu.gameStateTextController.SetGameStateText(GameState.None);
-        gameRule.ResetData(player.FindStartTF().GetComponent<Collider2D>());
+        if (gameRule != null)
+        {
+            gameRule.ResetData(player.FindStartTF().GetComponent<Collider2D>());
+        }
         uiFlowManager.spriteSwaper.floorResultImage.gameObject.SetActive(false);
         //메뉴글씨 초기화
     }
@@ -185,9 +188,10 @@ public class GameManager : MonoBehaviour
     public void ResultGame(bool isClear)
     {
         startGame = false;
-        uiFlowManager.ChangeScene();
+        uiFlowManager.JumpScene(5);
         uiFlowManager.UpdateResultPanel(isClear);
         playMenu.gameStateTextController.SetActiveText(false);
+        uiFlowManager.CloseCountDownPanel();
     }
     //게임스타트 (출발위치에 이동후 3초지나서 시작) , 출발위치에 안올라올시 1분뒤 대기화면으로
     //게임시간 진행
@@ -225,7 +229,12 @@ public class GameManager : MonoBehaviour
         startGame = false;
         uiFlowManager.AllDeactiveMap();
         playMenu.gameStateTextController.SetActiveText(false);
-        hintAnimator.Stop();
+        if (hintAnimator != null)
+        {
+            hintAnimator.Stop();
+
+        }
+        uiFlowManager.CloseCountDownPanel();
     }
     public void OnEndHint(bool isGiveUp)
     {

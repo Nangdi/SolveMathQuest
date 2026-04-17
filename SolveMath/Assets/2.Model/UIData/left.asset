@@ -14,9 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   modeName: "\uC88C\uD68C\uC804"
   mapSprites:
-  - {fileID: 21300000, guid: 94b016441d6a6114da4f18809208bc4f, type: 3}
-  - {fileID: 21300000, guid: c4c95cfc3ab67ee4db6a8a716414bc94, type: 3}
-  - {fileID: 21300000, guid: 03b72270a1b4f884e9a08517b5150196, type: 3}
+  - {fileID: 21300000, guid: 70d2c881acb164743b0d92fd07b91ca4, type: 3}
+  - {fileID: 21300000, guid: 05dd15da41af71d46ac3513af5b196a5, type: 3}
+  - {fileID: 21300000, guid: 60f89b5ad1aa8b44292327724db93a99, type: 3}
   titleSprite: {fileID: 21300000, guid: 4f7d1a299d0ffb44781fc1a271e7447f, type: 3}
   mapSprite: {fileID: 0}
   descriptionSprites:

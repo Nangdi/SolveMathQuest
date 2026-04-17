@@ -27,10 +27,11 @@ public class UIFlowManager : MonoBehaviour
     private GameObject myRecord;
     [SerializeField]
     private GameObject[] FloorScreens;
-
+    private StartTimerPanel[] CountDownPanels;
     public Button hintYesBtn;
     private void Start()
     {
+        CountDownPanels = FindObjectsOfType<StartTimerPanel>(true);
         AllDeactiveMap();
         JumpScene(currentFlowIndex);
     }
@@ -135,5 +136,12 @@ public class UIFlowManager : MonoBehaviour
     public GameObject GetCurrentMap()
     {
         return gameMaps[currentModedIndex].maps[currentDifficultyIndex];
+    }
+    public void CloseCountDownPanel()
+    {
+        for (int i = 0; i < CountDownPanels.Length; i++)
+        {
+            CountDownPanels[i].gameObject.SetActive(false);
+        }
     }
 }
