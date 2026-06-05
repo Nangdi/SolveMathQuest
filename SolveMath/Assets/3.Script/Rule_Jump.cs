@@ -14,24 +14,34 @@ public class Rule_Jump : MonoBehaviour, IGameRule
 
     public bool isRuleViolated(Collider2D col)
     {
-        //방향판단을 뭘로할것인가
-        //한 방향으로 이동했는가? 0,0 이면 패스 및 방향 업데이트
-
-        //카운트가 0인가? pass
-        //카운트가 0일시 현재자리의 카운트 업데이트, 방향 리셋 
-        //if (movingDir == Vector2Int.zero && col.CompareTag("Start"))
-
-        //이전위치 저장
         previousPos = currentPos;
-        //현재위치 업데이트
+
+        if (!MapManager.instance.colliderToIndex.ContainsKey(col))
+        {
+            Debug.LogWarning($"등록되지 않은 콜라이더: {col.name}");
+            return false;
+        }
+
         currentPos = MapManager.instance.colliderToIndex[col];
-        //이동방향계산
-        int dx = currentPos.x - previousPos.x;
-        int dy = currentPos.y - previousPos.y;
-        Vector2Int dir = new Vector2Int(dx, dy);
+
+        Vector2Int dir = currentPos - previousPos;
+
+        if (dir == Vector2Int.zero)
+        {
+            Debug.Log("같은 칸 재진입 - 무시");
+            return false;
+        }
+
+        if (Mathf.Abs(dir.x) + Mathf.Abs(dir.y) != 1)
+        {
+            Debug.Log($"비정상 이동 감지: {previousPos} -> {currentPos}");
+            return true;
+        }
+
         moveCount--;
+
         Debug.Log($"무브 카운트 : {moveCount}");
-        //초기화상태일시 
+
         if (movingDir == Vector2Int.zero)
         {
             movingDir = dir;
@@ -39,21 +49,20 @@ public class Rule_Jump : MonoBehaviour, IGameRule
         else if (movingDir != dir)
         {
             Debug.Log($"진행방향틀림 {movingDir} , {dir}");
-
             return true;
         }
+
         if (col.CompareTag("Arrive") && moveCount != 0)
         {
             Debug.Log("도착지점에 왔지만 count가 0이아님 클리어 X");
-
         }
-        Debug.Log($"정상진행");
+
         if (moveCount == 0)
         {
-
             Debug.Log("정상진행완료 , 초기화");
             ResetData(col);
         }
+
         return false;
     }
 

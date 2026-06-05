@@ -147,6 +147,7 @@ public class GameManager : MonoBehaviour
     public void GameStart()
     {
         ResetGame();
+        player.MoveStartPoint();
         startGame = true;
         Paused = false;
         Debug.Log("게임스타트");

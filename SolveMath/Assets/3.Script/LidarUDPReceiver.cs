@@ -35,6 +35,8 @@ public class LidarUDPReceiver : MonoBehaviour
 
     private Vector2 currentPos;
     public float deadLine = 0.01f;
+    private Vector2 lastMoveDir = Vector2.zero;
+    public float forwardSelectWeight = 0.15f;
 
 
 
@@ -64,7 +66,12 @@ public class LidarUDPReceiver : MonoBehaviour
           
 
             lidarDatas = Parseessage(latestMessage);
-           
+            if (lidarDatas.Length == 0)
+            {
+                playerManager.StopMove();
+                latestMessage = null;
+                return;
+            }
             if (lidarDatas.Length != 0)
             {
                 //Debug.Log("받은 데이터: " + latestMessage);
@@ -98,47 +105,38 @@ public class LidarUDPReceiver : MonoBehaviour
 
                     }
                 }
-                Vector2 sumPos = new Vector2();
-                int sumCount = 0;
-                foreach (var data in lidarDatas)
+                Vector2 mainPos;
+
+                if (TryGetForwardLidarPosition(out mainPos))
                 {
-                    bool Touchmenu;
-                    switch (data.stateId)
+                    if (!GameManager.instance.Paused)
                     {
-                        case 1:
-                            Debug.Log($"터치");
-                            //bool isClickMenu = lidarTouchManager.Click_RectTransformUtility(data.pos);
-                            //if (isClickMenu) return;
-                            //playerMenu.SetStopRotating(isClickMenu);
+                        if (currentPos == Vector2.zero || Vector2.Distance(currentPos, mainPos) > deadLine)
+                        {
+                            Vector2 moveDir = mainPos - currentPos;
 
-                            break;
-                        case 2:
-                            //Touchmenu = lidarTouchManager.IsPointerOverMenu(data.pos);
-                            //if (Touchmenu) return;
-                            sumPos += data.pos;
-                            sumCount++;
-                            //Debug.Log($"슬라이드, 위치 누적: {sumPos} , 더한 위치 : {data.pos}");
-                            break;
-                        case 3:
-                            //Touchmenu = lidarTouchManager.IsPointerOverMenu(data.pos);
-                            //if (Touchmenu) playerMenu.SetStopRotating(false);
-                            //lidarTouchManager.ClickScreenbylidar(data.pos);
+                            if (moveDir.sqrMagnitude > 0.001f)
+                            {
+                                lastMoveDir = moveDir.normalized;
+                            }
 
-                            break;
+                            playerManager.SetPlayerPosition(mainPos);
+                            currentPos = mainPos;
+                        }
                     }
                 }
-                if (sumCount == 0 && sumCount >3) return;
-                Vector2 midPos = sumPos / sumCount;
-                if (!GameManager.instance.Paused && midPos != Vector2.zero)
-                {
-                    if (Vector2.Distance(currentPos, midPos)  < deadLine) return;
-                    playerManager.SetPlayerPosition(midPos);
-                    currentPos = midPos;
-                    Debug.Log($"플레이어 위치 업데이트: {midPos} , 나눈 갯수 {lidarDatas.Length}");
-                }
-              
+                //if (sumCount == 0 && sumCount >3) return;
+                //Vector2 midPos = sumPos / sumCount;
+                //if (!GameManager.instance.Paused && midPos != Vector2.zero)
+                //{
+                //    if (Vector2.Distance(currentPos, midPos)  < deadLine) return;
+                //    playerManager.SetPlayerPosition(midPos);
+                //    currentPos = midPos;
+                //    Debug.Log($"플레이어 위치 업데이트: {midPos} , 나눈 갯수 {lidarDatas.Length}");
+                //}
+
             }
-                latestMessage = null; // 한 번만 찍고 초기화
+            latestMessage = null; // 한 번만 찍고 초기화
         }
     }
     private LidarData FindLidarDataByIndex(int index)
@@ -231,6 +229,65 @@ public class LidarUDPReceiver : MonoBehaviour
 
         }
         return null;
+    }
+    private bool TryGetMainLidarPosition(out Vector2 mainPos)
+    {
+        mainPos = Vector2.zero;
+
+        bool found = false;
+        float minDistance = float.MaxValue;
+
+        foreach (var data in lidarDatas)
+        {
+            if (data.stateId != 2) continue;
+            if (data.pos == Vector2.zero) continue;
+
+            float distance = Vector2.Distance(currentPos, data.pos);
+
+            if (!found || distance < minDistance)
+            {
+                minDistance = distance;
+                mainPos = data.pos;
+                found = true;
+            }
+        }
+
+        return found;
+    }
+    private bool TryGetForwardLidarPosition(out Vector2 mainPos)
+    {
+        mainPos = Vector2.zero;
+
+        bool found = false;
+        float bestScore = float.MinValue;
+
+        foreach (var data in lidarDatas)
+        {
+            if (data.stateId != 2) continue;
+            if (data.pos == Vector2.zero) continue;
+
+            Vector2 pos = data.pos;
+
+            float distanceScore = -Vector2.Distance(currentPos, pos);
+
+            float forwardScore = 0f;
+            if (lastMoveDir != Vector2.zero)
+            {
+                Vector2 fromCurrent = pos - currentPos;
+                forwardScore = Vector2.Dot(fromCurrent.normalized, lastMoveDir.normalized);
+            }
+
+            float score = distanceScore + forwardScore * forwardSelectWeight;
+
+            if (!found || score > bestScore)
+            {
+                bestScore = score;
+                mainPos = pos;
+                found = true;
+            }
+        }
+
+        return found;
     }
     private void OnApplicationQuit()
     {

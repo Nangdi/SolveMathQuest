@@ -128,6 +128,10 @@ public class PlayerManager : MonoBehaviour
 
 
     }
+    public void StopMove()
+    {
+        targetPos = Vector2.zero;
+    }
     public Transform FindStartTF()
     {
         GameObject mapObject = GameManager.instance.uiFlowManager.GetCurrentMap();
