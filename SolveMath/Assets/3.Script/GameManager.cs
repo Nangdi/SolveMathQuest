@@ -28,6 +28,7 @@ public class GameManager : MonoBehaviour
     public bool startGame;
     public bool Paused =true;
     private int _life = 3;
+    public bool hintPlaying = false;
 
     public int life
     {
@@ -135,6 +136,13 @@ public class GameManager : MonoBehaviour
     {
         ResetGame();
         uiFlowManager.JumpScene(4);
+        if (hintAnimator != null)
+        {
+            hintAnimator.Stop();
+
+        }
+        uiFlowManager.CloseCountDownPanel();
+
     }
     public void GameStart()
     {
@@ -199,9 +207,11 @@ public class GameManager : MonoBehaviour
     //게임시간정지
     public void Hint()
     {
+        if (!startGame || Paused || hintPlaying) return;
         if (life < 1) return;
         life--;
         hintCount++;
+        Paused = true;
         float hintSpeed = 0;
         if (hintCount == 1)
         {
@@ -216,6 +226,7 @@ public class GameManager : MonoBehaviour
             hintSpeed = 1f;
         }
         hintAnimator.Play(hintSpeed);
+        playMenu.gameStateTextController.gameObject.SetActive(true);
         playMenu.gameStateTextController.SetGameStateText(GameState.Hint);
     }
     public void GiveUp()
@@ -248,5 +259,7 @@ public class GameManager : MonoBehaviour
             ResultGame(false);
         }
         playMenu.gameStateTextController.SetActiveText(false);
+        hintPlaying = false;
+        //Paused = false;
     }
 }

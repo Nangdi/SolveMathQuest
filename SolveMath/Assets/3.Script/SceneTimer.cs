@@ -33,12 +33,17 @@ public class SceneTimer : MonoBehaviour
             //Debug.Log($"현재 값 : {isRunning}");
         if(lapseTime >= resetTime)
         {
-            Debug.Log("들어옴");
-            isRunning = false;
-            Debug.Log($"현재 값 : {isRunning}");
-            uIFlowManager.ResetFloorScreen();
-           
+            GoHome();
+
+
 
         }
+    }
+    public void GoHome()
+    {
+        Debug.Log("들어옴");
+        isRunning = false;
+        Debug.Log($"현재 값 : {isRunning}");
+        uIFlowManager.ResetFloorScreen();
     }
 }

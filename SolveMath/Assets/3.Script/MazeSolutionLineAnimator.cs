@@ -73,6 +73,7 @@ public class MazeSolutionLineAnimator : MonoBehaviour
     /// <summary>정답 라인을 서서히 그리기 시작</summary>
     public void Play(float speed , bool isGiveUp=false)
     {
+        //GameManager.instance.hintPlaying = true;
         Transform[] correctPath = MapManager.instance.GetCorrectPath(GameManager.instance.gameType , GameManager.instance.difficultyMode);
         CorectLineSetting(correctPath);
 

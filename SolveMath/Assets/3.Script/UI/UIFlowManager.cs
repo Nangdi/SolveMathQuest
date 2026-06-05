@@ -76,7 +76,8 @@ public class UIFlowManager : MonoBehaviour
     private IEnumerator ChangeScene_co(int index)
     {
         ChangingScene = true;
-        yield return new WaitForSeconds(0.5f);
+        //yield return new WaitForSeconds(0.5f);
+        yield return null;
 
         for (int i = 0; i < Screens.Length; i++)
         {
@@ -90,7 +91,8 @@ public class UIFlowManager : MonoBehaviour
     private IEnumerator JumpScene_co(int index )
     {
         ChangingScene = true;
-        yield return new WaitForSeconds(0.5f);
+        yield return null;
+        //yield return new WaitForSeconds(0.5f);
 
         for (int i = 0; i < Screens.Length; i++)
         {

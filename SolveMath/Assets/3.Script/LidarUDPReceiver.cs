@@ -107,21 +107,21 @@ public class LidarUDPReceiver : MonoBehaviour
                     {
                         case 1:
                             Debug.Log($"터치");
-                            bool isClickMenu = lidarTouchManager.Click_RectTransformUtility(data.pos);
-                            if (isClickMenu) return;
-                            playerMenu.SetStopRotating(isClickMenu);
+                            //bool isClickMenu = lidarTouchManager.Click_RectTransformUtility(data.pos);
+                            //if (isClickMenu) return;
+                            //playerMenu.SetStopRotating(isClickMenu);
 
                             break;
                         case 2:
-                            Touchmenu = lidarTouchManager.IsPointerOverMenu(data.pos);
-                            if (Touchmenu) return;
+                            //Touchmenu = lidarTouchManager.IsPointerOverMenu(data.pos);
+                            //if (Touchmenu) return;
                             sumPos += data.pos;
                             sumCount++;
                             //Debug.Log($"슬라이드, 위치 누적: {sumPos} , 더한 위치 : {data.pos}");
                             break;
                         case 3:
-                            Touchmenu = lidarTouchManager.IsPointerOverMenu(data.pos);
-                            if (Touchmenu) playerMenu.SetStopRotating(false);
+                            //Touchmenu = lidarTouchManager.IsPointerOverMenu(data.pos);
+                            //if (Touchmenu) playerMenu.SetStopRotating(false);
                             //lidarTouchManager.ClickScreenbylidar(data.pos);
 
                             break;
